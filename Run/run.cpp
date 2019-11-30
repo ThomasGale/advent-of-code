@@ -11,7 +11,7 @@ int main(int argc, char** argv)
 
 	// Find data.
 	std::stringstream ss;
-	ss << "" << year << "/day_" << std::setfill('0') << std::setw(2) << day << ".txt";
+	ss << "Y_" << year << "/d_" << std::setfill('0') << std::setw(2) << day << ".txt";
 	std::fstream fs;
 	std::cout << "Opening data file " << ss.str() << "...\n";
 	fs.open(ss.str());
