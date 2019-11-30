@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 	switch (year)
 	{
 	case 2018:
-		aoc::y2018::run(day, fs); break;
+		aoc::y2018::calculate(day, fs); break;
 	case 2019:
 	default:
 		throw std::runtime_error("Unrecognised year and day");;

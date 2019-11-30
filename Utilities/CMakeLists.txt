@@ -2,8 +2,9 @@
 set(CMAKE_CXX_STANDARD 17)
 
 add_library (Utilities
-"reader.hpp" "utils.hpp"
-"utilities.cpp"
+STATIC
+"reader.h" "reader.cpp"
+"utils.hpp"
 )
 
 set_target_properties(Utilities PROPERTIES LINKER_LANGUAGE CXX)

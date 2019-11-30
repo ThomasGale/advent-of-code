@@ -4,5 +4,5 @@ set(CMAKE_CXX_STANDARD 17)
 project(AventOfCode C CXX)
 
 add_subdirectory(Utilities)
-add_subdirectory(2018)
+add_subdirectory(Y_2018)
 add_subdirectory(Run)

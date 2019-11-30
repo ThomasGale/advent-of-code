@@ -2,6 +2,7 @@
 #pragma once
 
 #include <algorithm>
+#include <sstream>
 #include <functional>
 
 namespace aoc {

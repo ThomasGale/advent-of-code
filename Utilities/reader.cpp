@@ -1,24 +1,8 @@
 // Credit: https://github.com/watmough/Advent-of-Code-2018/blob/master/reader.hpp
-#pragma once
+#include "reader.h"
 
-#include <algorithm>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <iterator>
 
 namespace aoc {
-
-	class line {
-		std::string data;
-	public:
-		friend std::istream& operator>>(std::istream& is, line& l) {
-			std::getline(is, l.data);
-			return is;
-		}
-		operator std::string() const { return data; }
-	};
 
 	std::vector<std::string> read_input(std::istream& ifs)
 	{
