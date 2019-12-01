@@ -1,8 +1,5 @@
 #pragma once
 #include "default.h"
-#include <map>
-#include <set>
-#include <sstream>
 
 namespace aoc::y2018::d02 {	
 
@@ -16,7 +13,7 @@ namespace aoc::y2018::d02 {
 
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 2: Inventory Management System ---\n";
-		std::vector<std::string> input_strings = aoc::read_input(input);
+		std::vector<std::string> input_strings = aoc::utils::read_input(input);
 
 		// Part 1.
 		std::map<int, int> dupl_count;

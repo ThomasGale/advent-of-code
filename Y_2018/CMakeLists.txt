@@ -6,6 +6,7 @@ STATIC
 "default.h"
 "d_01.h"
 "d_02.h"
+"d_03.h"
 "y_2018.h" "y_2018.cpp"
 )
 

@@ -8,7 +8,7 @@
 #include <vector>
 #include <iterator>
 
-namespace aoc {
+namespace aoc::utils {
 
 	class line {
 		std::string data;

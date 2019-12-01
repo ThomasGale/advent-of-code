@@ -2,7 +2,7 @@
 #include "reader.h"
 
 
-namespace aoc {
+namespace aoc::utils {
 
 	std::vector<std::string> read_input(std::istream& ifs)
 	{

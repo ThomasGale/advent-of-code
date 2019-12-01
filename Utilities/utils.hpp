@@ -5,7 +5,7 @@
 #include <sstream>
 #include <functional>
 
-namespace aoc {
+namespace aoc::utils {
 
 	// Count non-matching values over two ranges of iterators
 	// See: https://en.cppreference.com/w/cpp/algorithm/count
