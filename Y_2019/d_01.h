@@ -1,6 +1,5 @@
 #pragma once
 #include "default.h"
-#include <set>
 
 namespace aoc::y2019::d01 {	
 
