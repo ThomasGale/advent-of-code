@@ -5,6 +5,7 @@ add_library (Y_2019
 STATIC
 "default.h"
 "d_01.h"
+"d_02.h"
 "y_2019.h" "y_2019.cpp"
 )
 
