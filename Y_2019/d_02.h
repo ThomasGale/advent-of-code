@@ -1,8 +1,6 @@
 #pragma once
 #include "default.h"
 
-#include <sstream>
-
 namespace aoc::y2019::d02 {
 
 	int RunProgram(std::vector<int>& programState)
@@ -76,8 +74,5 @@ namespace aoc::y2019::d02 {
 				}
 			}
 		}
-
-
-
 	}
 }
