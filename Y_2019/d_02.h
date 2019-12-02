@@ -33,6 +33,23 @@ namespace aoc::y2019::d02 {
 		return programState[0];
 	}
 
+	std::tuple<int, int> FindNounAndVerb(const std::vector<int>& inputProgram, int requiredOutput) {
+		for (int noun = 0; noun < 100; ++noun) {
+			for (int verb = 0; verb < 100; ++verb) {
+				std::vector<int> part2ProgramState(inputProgram);
+				part2ProgramState[1] = noun;
+				part2ProgramState[2] = verb;
+
+				int output = RunProgram(part2ProgramState);
+				if (output == requiredOutput)
+				{
+					return { noun, verb };
+				}
+			}
+		}
+		throw std::runtime_error("Unable to find noun and verb... :(");
+	}
+
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 2: 1202 Program Alarm ---\n";
 		std::string input_str(std::istreambuf_iterator<char>(input), {});
@@ -58,21 +75,9 @@ namespace aoc::y2019::d02 {
 
 		// Part 2.
 		// Brute search 
-		int noun = 0;
-		int verb = 0;
-		for (noun = 0; noun < 100; ++noun) {
-			for (verb = 0; verb < 100; ++verb) {
-				std::vector<int> part2ProgramState(inputProgram);
-				part2ProgramState[1] = noun;
-				part2ProgramState[2] = verb;
-				int output = RunProgram(part2ProgramState);
-				if (output == 19690720)
-				{
-					std::cout << "2. Noun and Verb Found:\n";
-					std::cout << noun << " and " << verb << "\n";
-					std::cout << "Ouput: " << 100 * noun + verb << "\n";
-				}
-			}
-		}
+		auto [noun, verb] = FindNounAndVerb(inputProgram, 19690720);
+		std::cout << "2. Noun and Verb Found:\n";
+		std::cout << noun << " and " << verb << "\n";
+		std::cout << "Ouput: " << 100 * noun + verb << "\n";
 	}
 }
