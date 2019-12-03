@@ -4,13 +4,36 @@
 namespace aoc::y2019::d03 {
 
 	struct Location {
-		Location(int x, int y) : X(x), Y(y) {};
 		int X, Y;
+		Location(int x, int y) : X(x), Y(y) {};
 	};
 
 	struct Segment {
-		Segment(Location start, Location end) : Start(start), End(end) {}
 		Location Start, End;
+		Segment(Location start, Location end) : Start(start), End(end) {}
+
+		bool IsHorizontal() const { return Start.Y == End.Y; }
+		bool IsVertical() const { return Start.X == End.X; }
+
+		bool IsHorizontalOverlap(const Location& location) const {
+			return (std::min(Start.X, End.X) < location.X) && (std::max(Start.X, End.X) > location.X);
+		}
+
+		bool IsVerticalOverlap(const Location& location) const {
+			return (std::min(Start.Y, End.Y) < location.Y) && (std::max(Start.Y, End.Y) > location.Y);
+		}
+
+		std::optional<Location> GetIntersection(const Segment& otherSeg) {
+			if (IsHorizontal() && otherSeg.IsVertical() && (IsHorizontalOverlap(otherSeg.Start)) && (otherSeg.IsVerticalOverlap(Start))) {
+				return Location(otherSeg.Start.X, Start.Y);
+			}
+			else if (IsVertical() && otherSeg.IsHorizontal() && (IsVerticalOverlap(otherSeg.Start)) && (otherSeg.IsHorizontalOverlap(Start))) {
+				return Location(Start.X, otherSeg.Start.Y);
+			}
+			else {
+				return std::nullopt;
+			}
+		}
 	};
 
 	struct Wire {
@@ -44,34 +67,39 @@ namespace aoc::y2019::d03 {
 			}
 		}
 
-		//std::vector<Location> findIntersections(const Wire& otherWire) {
-		//	std::vector<Location> intersections;
-		//	// Loop over the current segments
-		//	for (auto i = 0; i < segments.size()-1; ++i) {
-		//		// Loop over the other wire segments
-		//		for (auto j = 0; j < otherWire.segments.size()-1; ++j) {
-		//			// If current segment is horizonal 
-		//			if (segments[i].X == segments[i+1].X) {
-		//				if (segments)
-		//			}
-		//		}
-		//	}
-		//	return intersections;
-		//}
+		std::vector<Location> FindIntersections(const Wire& otherWire) {
+			std::vector<Location> intersections;
+			// Loop over the current segments
+			for (auto i = 0; i < Segments.size(); ++i) {
+				// Loop over the other wire segments
+				for (auto j = 0; j < otherWire.Segments.size(); ++j) {
+					// Find intersection
+					auto intersection = Segments[i].GetIntersection(otherWire.Segments[j]);
+					if (intersection != std::nullopt)
+						intersections.push_back(intersection.value());
+				}
+			}
+			return intersections;
+		}
 	};
 
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 3: Crossed Wires ---\n";
 		std::vector<std::string> input_strings = aoc::utils::read_input(input);
-
 		std::vector<std::string> wire1_str = aoc::utils::split(input_strings[0], ',');
 		std::vector<std::string> wire2_str = aoc::utils::split(input_strings[1], ',');
 
 		Wire wire1(wire1_str);
 		Wire wire2(wire2_str);
 
-		std::cout << "1. ... :\n";
-		std::cout << "" << "\n";
+		// Part 1
+		std::vector<Location> intersections = wire1.FindIntersections(wire2);
+		std::vector<int> manhatDistances(intersections.size());
+		std::transform(intersections.begin(), intersections.end(), manhatDistances.begin(), [](const Location& loc) { return std::abs(loc.X) + std::abs(loc.Y); });
+		int closedCrossingDist = *std::min_element(manhatDistances.begin(), manhatDistances.end());
+
+		std::cout << "1. Manhattan distance from the central port to the closest intersection:\n";
+		std::cout << closedCrossingDist << "\n";
 
 		std::cout << "2. ... :\n";
 		std::cout << "" << "\n";
