@@ -1,87 +1,8 @@
 #pragma once
 #include "default.h"
+#include <map>
 
 namespace aoc::y2019::d03 {
-
-	struct Location {
-		int X, Y;
-		Location(int x, int y) : X(x), Y(y) {};
-	};
-
-	struct Segment {
-		Location Start, End;
-		Segment(Location start, Location end) : Start(start), End(end) {}
-
-		bool IsHorizontal() const { return Start.Y == End.Y; }
-		bool IsVertical() const { return Start.X == End.X; }
-
-		bool IsHorizontalOverlap(const Location& location) const {
-			return (std::min(Start.X, End.X) < location.X) && (std::max(Start.X, End.X) > location.X);
-		}
-
-		bool IsVerticalOverlap(const Location& location) const {
-			return (std::min(Start.Y, End.Y) < location.Y) && (std::max(Start.Y, End.Y) > location.Y);
-		}
-
-		std::optional<Location> GetIntersection(const Segment& otherSeg) {
-			if (IsHorizontal() && otherSeg.IsVertical() && (IsHorizontalOverlap(otherSeg.Start)) && (otherSeg.IsVerticalOverlap(Start))) {
-				return Location(otherSeg.Start.X, Start.Y);
-			}
-			else if (IsVertical() && otherSeg.IsHorizontal() && (IsVerticalOverlap(otherSeg.Start)) && (otherSeg.IsHorizontalOverlap(Start))) {
-				return Location(Start.X, otherSeg.Start.Y);
-			}
-			else {
-				return std::nullopt;
-			}
-		}
-	};
-
-	struct Wire {
-		std::vector<Segment> Segments;
-
-		Wire(std::vector<std::string> wire_str) {
-			Location previous(0, 0); // Track previous location
-			Location current(0, 0); // Track current location
-
-			Segments = std::vector<Segment>(); // Build up segments			
-			for (auto& wire_seg_str : wire_str) { // Parse wire_str
-				switch (wire_seg_str[0])
-				{
-				case 'U':
-					current.Y += std::stoi(wire_seg_str.substr(1, wire_seg_str.size() - 1));
-					break;
-				case 'R':
-					current.X += std::stoi(wire_seg_str.substr(1, wire_seg_str.size() - 1));
-					break;
-				case 'D':
-					current.Y -= std::stoi(wire_seg_str.substr(1, wire_seg_str.size() - 1));
-					break;
-				case 'L':
-					current.X -= std::stoi(wire_seg_str.substr(1, wire_seg_str.size() - 1));
-					break;
-				default:
-					throw std::runtime_error("Bad command");
-				}
-				Segments.push_back(Segment(previous, current));
-				previous = current;
-			}
-		}
-
-		std::vector<Location> FindIntersections(const Wire& otherWire) {
-			std::vector<Location> intersections;
-			// Loop over the current segments
-			for (auto i = 0; i < Segments.size(); ++i) {
-				// Loop over the other wire segments
-				for (auto j = 0; j < otherWire.Segments.size(); ++j) {
-					// Find intersection
-					auto intersection = Segments[i].GetIntersection(otherWire.Segments[j]);
-					if (intersection != std::nullopt)
-						intersections.push_back(intersection.value());
-				}
-			}
-			return intersections;
-		}
-	};
 
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 3: Crossed Wires ---\n";
@@ -89,19 +10,77 @@ namespace aoc::y2019::d03 {
 		std::vector<std::string> wire1_str = aoc::utils::split(input_strings[0], ',');
 		std::vector<std::string> wire2_str = aoc::utils::split(input_strings[1], ',');
 
-		Wire wire1(wire1_str);
-		Wire wire2(wire2_str);
+		auto wire1 = ComputeCrawledWire(wire1_str);
+		auto wire2 = ComputeCrawledWire(wire2_str);
 
-		// Part 1
-		std::vector<Location> intersections = wire1.FindIntersections(wire2);
+		std::set<std::tuple<int, int>> wire1Keys;
+		std::set<std::tuple<int, int>> wire2Keys;
+
+		for (auto it = wire1.begin(); it != wire1.end(); ++it) {
+			wire1Keys.insert(it->first);
+		}
+		for (auto it = wire2.begin(); it != wire2.end(); ++it) {
+			wire2Keys.insert(it->first);
+		}
+
+		std::set<std::tuple<int, int>> intersections;
+		std::set_intersection(wire1Keys.begin(), wire1Keys.end(), wire2Keys.begin(), wire2Keys.end(), std::inserter(intersections, intersections.begin()));
+
+		// Part 1.
 		std::vector<int> manhatDistances(intersections.size());
-		std::transform(intersections.begin(), intersections.end(), manhatDistances.begin(), [](const Location& loc) { return std::abs(loc.X) + std::abs(loc.Y); });
-		int closedCrossingDist = *std::min_element(manhatDistances.begin(), manhatDistances.end());
+		std::transform(intersections.begin(), intersections.end(), manhatDistances.begin(), [](const std::tuple<int, int>& loc) { return Manhat(std::get<0>(loc), std::get<1>(loc)); });
+		int closestCrossingDist = *std::min_element(manhatDistances.begin(), manhatDistances.end());
 
 		std::cout << "1. Manhattan distance from the central port to the closest intersection:\n";
-		std::cout << closedCrossingDist << "\n";
+		std::cout << closestCrossingDist << "\n";
 
-		std::cout << "2. ... :\n";
-		std::cout << "" << "\n";
+		// Part 2.
+		std::vector<int> crossingDistances(intersections.size());
+		std::transform(intersections.begin(), intersections.end(), crossingDistances.begin(), [&wire1, &wire2](const std::tuple<int, int>& loc) { return wire1[loc] + wire2[loc] + 2; }); // Add 2 because of first step from 0 not counted.
+		int closestCrawledCrossingDist = *std::min_element(crossingDistances.begin(), crossingDistances.end());
+
+		std::cout << "2. Fewest combined steps the wires must take to reach an intersection:\n";
+		std::cout << closestCrawledCrossingDist << "\n";
+	}
+
+	// Map of Coordinates to length of wire.
+	std::map<std::tuple<int, int>, int> ComputeCrawledWire(const std::vector<std::string>& wireStr) {
+		std::map<std::tuple<int, int>, int> path;
+		int x = 0;
+		int y = 0;
+		int d = 0;
+
+		for (auto& wire_seg_str : wireStr) { // Parse wire_str
+			switch (wire_seg_str[0])
+			{
+			case 'U':
+				for (auto step = 0; step < std::stoi(wire_seg_str.substr(1, wireStr.size() - 1)); step++) {
+					path[{x, ++y}] = d++;
+				}
+				break;
+			case 'R':
+				for (auto step = 0; step < std::stoi(wire_seg_str.substr(1, wireStr.size() - 1)); step++) {
+					path[{++x, y}] = d++;
+				}
+				break;
+			case 'D':
+				for (auto step = 0; step < std::stoi(wire_seg_str.substr(1, wireStr.size() - 1)); step++) {
+					path[{x, --y}] = d++;
+				}
+				break;
+			case 'L':
+				for (auto step = 0; step < std::stoi(wire_seg_str.substr(1, wireStr.size() - 1)); step++) {
+					path[{--x, y}] = d++;
+				}
+				break;
+			default:
+				throw std::runtime_error("Bad command");
+			}
+		}
+		return path;
+	}
+
+	int Manhat(int x, int y) {
+		return std::abs(x) + std::abs(y);
 	}
 }
