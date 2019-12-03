@@ -8,19 +8,20 @@ namespace aoc::y2019::d03 {
 		int X, Y;
 	};
 
+	struct Segment {
+		Segment(Location start, Location end) : Start(start), End(end) {}
+		Location Start, End;
+	};
+
 	struct Wire {
-		std::vector<Location> segments;
+		std::vector<Segment> Segments;
+
 		Wire(std::vector<std::string> wire_str) {
+			Location previous(0, 0); // Track previous location
+			Location current(0, 0); // Track current location
 
-			// Track current location
-			Location current(0, 0);
-
-			// Build up segments
-			segments = std::vector<Location>{ current };
-		
-			// Parse wire_str
-			for (auto& wire_seg_str : wire_str) {
-
+			Segments = std::vector<Segment>(); // Build up segments			
+			for (auto& wire_seg_str : wire_str) { // Parse wire_str
 				switch (wire_seg_str[0])
 				{
 				case 'U':
@@ -38,10 +39,25 @@ namespace aoc::y2019::d03 {
 				default:
 					throw std::runtime_error("Bad command");
 				}
-
-				segments.push_back(current);
+				Segments.push_back(Segment(previous, current));
+				previous = current;
 			}
 		}
+
+		//std::vector<Location> findIntersections(const Wire& otherWire) {
+		//	std::vector<Location> intersections;
+		//	// Loop over the current segments
+		//	for (auto i = 0; i < segments.size()-1; ++i) {
+		//		// Loop over the other wire segments
+		//		for (auto j = 0; j < otherWire.segments.size()-1; ++j) {
+		//			// If current segment is horizonal 
+		//			if (segments[i].X == segments[i+1].X) {
+		//				if (segments)
+		//			}
+		//		}
+		//	}
+		//	return intersections;
+		//}
 	};
 
 	void calculate(std::istream& input) {
