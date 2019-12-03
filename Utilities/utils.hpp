@@ -36,35 +36,21 @@ namespace aoc::utils {
 		}
 	}
 
-	// Split a line into std::string tokens
-	// See: https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
-	std::vector<std::string> split(const std::string& s, char delimiter)
-	{
-		std::vector<std::string> tokens;
-		std::string token;
-		std::istringstream tokenStream(s);
-		while (std::getline(tokenStream, token, delimiter))
-		{
-			tokens.push_back(token);
-		}
-		return tokens;
-	}
-
-	// Split a line into tokens, we may have multiple possible delimiters
-	// Inspired by: https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
-	template <typename FWIter, typename Func>
-	std::vector<std::string> split(FWIter first, FWIter last, Func is_delim)
-	{
-		auto pos = first;
-		auto lst = FWIter();
-		auto tokens = std::vector<std::string>();
-		while (pos != last)
-		{
-			lst = std::find_if(pos, last, is_delim);
-			auto token = std::string(pos, lst);
-			tokens.push_back(token);
-			pos = std::find_if(lst, last, std::not1(is_delim));
-		}
-		return tokens;
-	}
+	//// Split a line into tokens, we may have multiple possible delimiters
+	//// Inspired by: https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
+	//template <typename FWIter, typename Func>
+	//std::vector<std::string> split(FWIter first, FWIter last, Func is_delim)
+	//{
+	//	auto pos = first;
+	//	auto lst = FWIter();
+	//	auto tokens = std::vector<std::string>();
+	//	while (pos != last)
+	//	{
+	//		lst = std::find_if(pos, last, is_delim);
+	//		auto token = std::string(pos, lst);
+	//		tokens.push_back(token);
+	//		pos = std::find_if(lst, last, std::not1(is_delim));
+	//	}
+	//	return tokens;
+	//}
 }

@@ -27,4 +27,8 @@ namespace aoc::utils {
 	std::vector<std::string> read_input(const std::string& f);
 
 	std::vector<int64_t> read_ints(const std::string& f);
+
+	// Split a line into std::string tokens
+	// See: https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
+	std::vector<std::string> split(const std::string& s, char delimiter);
 }

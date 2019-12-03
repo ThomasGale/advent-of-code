@@ -1,6 +1,10 @@
 // Credit: https://github.com/watmough/Advent-of-Code-2018/blob/master/reader.hpp
 #include "reader.h"
 
+#include <sstream>
+#include <string>
+
+
 
 namespace aoc::utils {
 
@@ -40,5 +44,19 @@ namespace aoc::utils {
 			exit(-1);
 		}
 		return read_ints(ifs);
+	}
+
+	// Split a line into std::string tokens
+	// See: https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
+	std::vector<std::string> split(const std::string& s, char delimiter)
+	{
+		std::vector<std::string> tokens;
+		std::string token;
+		std::istringstream tokenStream(s);
+		while (std::getline(tokenStream, token, delimiter))
+		{
+			tokens.push_back(token);
+		}
+		return tokens;
 	}
 }
