@@ -41,10 +41,6 @@ namespace aoc::y2019::d03 {
 
 				segments.push_back(current);
 			}
-
-
-
-
 		}
 	};
 
