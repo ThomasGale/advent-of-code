@@ -8,6 +8,7 @@ configure_file("../Y_2018/d_03.txt" "Y_2018/d_03.txt" COPYONLY)
 configure_file("../Y_2019/d_01.txt" "Y_2019/d_01.txt" COPYONLY)
 configure_file("../Y_2019/d_02.txt" "Y_2019/d_02.txt" COPYONLY)
 configure_file("../Y_2019/d_03.txt" "Y_2019/d_03.txt" COPYONLY)
+configure_file("../Y_2019/d_04.txt" "Y_2019/d_04.txt" COPYONLY)
 
 add_executable (Run
 "run.h" "run.cpp"
