@@ -2,14 +2,16 @@
 #include "default.h"
 #include <set>
 
-namespace aoc::y2019::d04 {	
+namespace aoc::y2019::d04 {
+
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 4: Secure Container ---\n";
 
 		std::vector<int> validPasswords;
 
 		int validCount = 0;
-		for (int pw = 124075; pw <= 580769l; ++pw) {
+		for (int pw = 124075; pw <= 580769; ++pw) {
+			//pw = 144555;
 			auto pwStr = std::to_string(pw);
 
 			bool incrOk = true;
@@ -17,22 +19,27 @@ namespace aoc::y2019::d04 {
 				if (pwStr[i + 1] < pwStr[i]) incrOk = false;
 			}
 
-			bool dup = false;
+			std::map<int, char> pairLocations;
 			for (auto i = 0; i < pwStr.size() - 1; ++i) {
 				if (pwStr[i] == pwStr[i + 1]) {
-					dup = true;
+					pairLocations[i] = pwStr[i];
 				}
 			}
-			if (incrOk && dup) {
+
+			bool isolatedPair = false;
+			for (auto pairLoc : pairLocations) {
+				if ((pairLocations.find(pairLoc.first - 1) == pairLocations.end()) && (pairLocations.find(pairLoc.first + 1) == pairLocations.end())) {
+					isolatedPair = true;
+				}
+			}
+
+			if (incrOk && isolatedPair) {
 				++validCount;
 				validPasswords.push_back(pw);
 			}
 		}
 
-		std::cout << "1. Passwords that meet criteria:\n";
+		std::cout << "2. Passwords that meet criteria:\n";
 		std::cout << validCount << "\n";
-
-		std::cout << "2. ... :\n";
-		std::cout << "" << "\n";
 	}
 }
