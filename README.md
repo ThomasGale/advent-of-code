@@ -1,1 +1,3 @@
-# advent-of-code
+# [Advent Of Code](https://adventofcode.com)
+Turns out I'm really bad at solving these problems quickly...
+Anyway here is my c++ implementation for the ones I've managed to solve.
