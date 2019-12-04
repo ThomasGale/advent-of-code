@@ -11,7 +11,6 @@ namespace aoc::y2019::d04 {
 
 		int validCount = 0;
 		for (int pw = 124075; pw <= 580769; ++pw) {
-			//pw = 144555;
 			auto pwStr = std::to_string(pw);
 
 			bool incrOk = true;
