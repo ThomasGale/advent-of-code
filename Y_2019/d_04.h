@@ -6,11 +6,13 @@ namespace aoc::y2019::d04 {
 
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 4: Secure Container ---\n";
-
-		std::vector<int> validPasswords;
+		std::vector<std::string> input_strings = aoc::utils::read_input(input);
+		std::vector<std::string> passwordRangeStr = aoc::utils::split(input_strings[0], '-');
+		int lowerRange = std::stoi(passwordRangeStr[0]);
+		int upperRange = std::stoi(passwordRangeStr[1]);
 
 		int validCount = 0;
-		for (int pw = 124075; pw <= 580769; ++pw) {
+		for (int pw = lowerRange; pw <= upperRange; ++pw) {
 			auto pwStr = std::to_string(pw);
 
 			bool incrOk = true;
@@ -34,7 +36,6 @@ namespace aoc::y2019::d04 {
 
 			if (incrOk && isolatedPair) {
 				++validCount;
-				validPasswords.push_back(pw);
 			}
 		}
 
