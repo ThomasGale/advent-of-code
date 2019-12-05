@@ -10,16 +10,16 @@ namespace aoc::y2019::d05 {
 		else return program[instruction];
 	}
 
-	void RunProgram(std::vector<int>& programState)
+	void RunProgram(std::vector<int>& pState)
 	{
 		int pProg = 0;
 		std::bitset<3> modes;
 		int opCode = 0;
 
 		while (true) {
-			if (programState[pProg] == 99) break; // Terminate
+			if (pState[pProg] == 99) break; // Terminate
 
-			std::string opCodeStr(std::to_string(programState[pProg])); // Read instruction as string
+			std::string opCodeStr(std::to_string(pState[pProg])); // Read instruction as string
 			if (opCodeStr.size() == 1) {
 				opCode = std::stoi(opCodeStr);
 				modes = 0b000;
@@ -33,35 +33,35 @@ namespace aoc::y2019::d05 {
 			switch (opCode)
 			{
 			case 1:
-				programState[programState[pProg + 3]] = getValue(modes[0], programState[pProg + 1], programState) + getValue(modes[1], programState[pProg + 2], programState);
+				pState[pState[pProg + 3]] = getValue(modes[0], pState[pProg + 1], pState) + getValue(modes[1], pState[pProg + 2], pState);
 				pProg += 4;
 				break;
 			case 2:
-				programState[programState[pProg + 3]] = getValue(modes[0], programState[pProg + 1], programState) * getValue(modes[1], programState[pProg + 2], programState);
+				pState[pState[pProg + 3]] = getValue(modes[0], pState[pProg + 1], pState) * getValue(modes[1], pState[pProg + 2], pState);
 				pProg += 4;
 				break;
 			case 3:
 				std::cout << "Enter input: ";
 				std::cin >> input;
-				programState[programState[pProg + 1]] = std::stoi(input);
+				pState[pState[pProg + 1]] = std::stoi(input);
 				pProg += 2;
 				break;
 			case 4:
-				std::cout << getValue(modes[0], programState[pProg + 1], programState);
+				std::cout << getValue(modes[0], pState[pProg + 1], pState);
 				pProg += 2;
 				break;
 			case 5:
-				pProg = ((getValue(modes[0], programState[pProg + 1], programState) != 0) ? getValue(modes[1], programState[pProg + 2], programState) : pProg + 3);
+				pProg = ((getValue(modes[0], pState[pProg + 1], pState) != 0) ? getValue(modes[1], pState[pProg + 2], pState) : pProg + 3);
 				break;
 			case 6:
-				pProg = ((getValue(modes[0], programState[pProg + 1], programState) == 0) ? getValue(modes[1], programState[pProg + 2], programState) : pProg + 3);
+				pProg = ((getValue(modes[0], pState[pProg + 1], pState) == 0) ? getValue(modes[1], pState[pProg + 2], pState) : pProg + 3);
 				break;
 			case 7:
-				programState[programState[pProg + 3]] = getValue(modes[0], programState[pProg + 1], programState) < getValue(modes[1], programState[pProg + 2], programState);
+				pState[pState[pProg + 3]] = getValue(modes[0], pState[pProg + 1], pState) < getValue(modes[1], pState[pProg + 2], pState);
 				pProg += 4;
 				break;
 			case 8:
-				programState[programState[pProg + 3]] = getValue(modes[0], programState[pProg + 1], programState) == getValue(modes[1], programState[pProg + 2], programState);
+				pState[pState[pProg + 3]] = getValue(modes[0], pState[pProg + 1], pState) == getValue(modes[1], pState[pProg + 2], pState);
 				pProg += 4;
 				break;
 			default:
