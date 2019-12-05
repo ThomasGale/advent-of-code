@@ -33,11 +33,11 @@ namespace aoc::y2019::d05 {
 			switch (opCode)
 			{
 			case 1:
-				programState[programState[pProg + 3]] = getValue(modes[2], programState[pProg + 1], programState) + getValue(modes[1], programState[pProg + 2], programState);
+				programState[programState[pProg + 3]] = getValue(modes[0], programState[pProg + 1], programState) + getValue(modes[1], programState[pProg + 2], programState);
 				pProg += 4;
 				break;
 			case 2:
-				programState[programState[pProg + 3]] = getValue(modes[2], programState[pProg + 1], programState) * getValue(modes[1], programState[pProg + 2], programState);
+				programState[programState[pProg + 3]] = getValue(modes[0], programState[pProg + 1], programState) * getValue(modes[1], programState[pProg + 2], programState);
 				pProg += 4;
 				break;
 			case 3:
@@ -47,7 +47,7 @@ namespace aoc::y2019::d05 {
 				pProg += 2;
 				break;
 			case 4:
-				std::cout << getValue(modes[2], programState[pProg + 1], programState);
+				std::cout << getValue(modes[0], programState[pProg + 1], programState);
 				pProg += 2;
 				break;
 			default:
