@@ -41,7 +41,7 @@ namespace aoc::y2019::d05 {
 				pProg += 4;
 				break;
 			case 3:
-				std::cout << "Enter int: ";
+				std::cout << "Enter input: ";
 				std::cin >> input;
 				programState[programState[pProg + 1]] = std::stoi(input);
 				pProg += 2;
@@ -49,6 +49,20 @@ namespace aoc::y2019::d05 {
 			case 4:
 				std::cout << getValue(modes[0], programState[pProg + 1], programState);
 				pProg += 2;
+				break;
+			case 5:
+				pProg = ((getValue(modes[0], programState[pProg + 1], programState) != 0) ? getValue(modes[1], programState[pProg + 2], programState) : pProg + 3);
+				break;
+			case 6:
+				pProg = ((getValue(modes[0], programState[pProg + 1], programState) == 0) ? getValue(modes[1], programState[pProg + 2], programState) : pProg + 3);
+				break;
+			case 7:
+				programState[programState[pProg + 3]] = getValue(modes[0], programState[pProg + 1], programState) < getValue(modes[1], programState[pProg + 2], programState);
+				pProg += 4;
+				break;
+			case 8:
+				programState[programState[pProg + 3]] = getValue(modes[0], programState[pProg + 1], programState) == getValue(modes[1], programState[pProg + 2], programState);
+				pProg += 4;
 				break;
 			default:
 				throw std::runtime_error("Unrecognised opcode");
@@ -58,16 +72,11 @@ namespace aoc::y2019::d05 {
 
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 5: Sunny with a Chance of Asteroids ---\n";
-		std::string input_str(std::istreambuf_iterator<char>(input), {});
-		std::stringstream ss(input_str);
+		std::string inputStr(std::istreambuf_iterator<char>(input), {});
+		std::vector<std::string> inputStrs = aoc::utils::split(inputStr, ',');
 		std::vector<int> inputProgram;
-		while (ss.good()) {
-			std::string command;
-			std::getline(ss, command, ',');
-			inputProgram.push_back(std::stoi(command));
-		}
+		std::transform(inputStrs.begin(), inputStrs.end(), std::back_inserter(inputProgram), [](auto& input) { return std::stoi(input); });
 
-		std::cout << "1. Diagnostic Code:\n";
 		RunProgram(inputProgram);
 	}
 }
