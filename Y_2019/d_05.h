@@ -25,7 +25,6 @@ namespace aoc::y2019::d05 {
 				modes = 0b000;
 			}
 			else {
-				opCodeStr = "1102";
 				opCode = std::stoi(opCodeStr.substr(opCodeStr.size() - 2));
 				modes = std::bitset<3>(opCodeStr.substr(0, opCodeStr.size() - 2));
 			}
