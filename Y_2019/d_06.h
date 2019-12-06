@@ -4,12 +4,25 @@
 namespace aoc::y2019::d06 {
 
 	void calculate(std::istream& input) {
-		std::cout << "...\n";
-		//std::vector<std::string> input_strings = aoc::utils::read_input(input);
-		//std::string inputStr(std::istreambuf_iterator<char>(input), {});
-		//std::vector<std::string> inputStrs = aoc::utils::split(inputStr, ',');
+		std::cout << "--- Day 6: Universal Orbit Map ---\n";
+		std::vector<std::string> inputStrs = aoc::utils::read_input(input);
+		std::map<std::string, std::string> orbitMap; // Key orbits value
+		for (auto& inputStr : inputStrs) {
+			std::vector<std::string> orbitsStr = aoc::utils::split(inputStr, ')');
+			orbitMap[orbitsStr[1]] = orbitsStr[0];
+		}
 
-		std::cout << "1. ... :\n";
-		std::cout << "" << "\n";
+		int totalOrbits = 0;
+		for (const auto& orbit : orbitMap) {
+			++totalOrbits;
+			std::string currentParent = orbit.second;
+			while (currentParent != "COM") {
+				currentParent = orbitMap[currentParent];
+				++totalOrbits;
+			}
+		}
+
+		std::cout << "1. Total number of direct and indirect orbits :\n";
+		std::cout << totalOrbits << "\n";
 	}
 }
