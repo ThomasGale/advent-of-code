@@ -57,7 +57,7 @@ namespace aoc::y2019::d06 {
 			distances.push_back(distance);
 		}
 
-		std::cout << "3. Min distance between YOU and SAN:\n";
+		std::cout << "2. Min distance between YOU and SAN:\n";
 		std::cout << *std::min_element(distances.begin(), distances.end()) << "\n";
 	}
 }
