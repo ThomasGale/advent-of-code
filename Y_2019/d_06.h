@@ -39,12 +39,7 @@ namespace aoc::y2019::d06 {
 		// Part 1.
 		int totalOrbits = 0;
 		for (const auto& orbit : orbitMap) {
-			++totalOrbits;
-			std::string currentParent = orbit.second;
-			while (currentParent != "COM") {
-				currentParent = orbitMap[currentParent];
-				++totalOrbits;
-			}
+			totalOrbits += computeDistance(orbitMap, orbit.first, "COM");
 		}
 
 		std::cout << "1. Total number of direct and indirect orbits :\n";
@@ -58,14 +53,12 @@ namespace aoc::y2019::d06 {
 		std::set_intersection(youParents.begin(), youParents.end(), sanParents.begin(), sanParents.end(), std::inserter(commonParents, commonParents.begin()));
 		
 		std::vector<int> distances;
-		// Comptute total distance from YOU and SAN to common parent
 		for (auto& parent : commonParents) {
-			int distance = computeDistance(orbitMap, "YOU", parent) - 1;
-			distance += computeDistance(orbitMap, "SAN", parent) - 1;
+			int distance = computeDistance(orbitMap, "YOU", parent) - 1; // Transfer doesn't consider distance to current parent
+			distance += computeDistance(orbitMap, "SAN", parent) - 1; // ^^
 			distances.push_back(distance);
 		}
 
-		// Take min.
 		std::cout << "3. Min distance between YOU and SAN:\n";
 		std::cout << *std::min_element(distances.begin(), distances.end()) << "\n";
 	}
