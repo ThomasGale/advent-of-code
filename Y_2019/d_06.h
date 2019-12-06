@@ -14,15 +14,13 @@ namespace aoc::y2019::d06 {
 		return distance;
 	}
 
-	// Don't call with COM
 	std::set<std::string> computeParents(std::map<std::string, std::string>& orbitMap, const std::string& entity) {
 		std::set<std::string> parents;
 		std::string currentEntity = entity;
 		while (true) {
-			std::string currentParent = orbitMap[currentEntity];
-			parents.insert(currentParent);
-			if (currentParent == "COM") break;
-			currentEntity = currentParent;
+			if (currentEntity == "COM") break;
+			parents.insert(orbitMap[currentEntity]);
+			currentEntity = orbitMap[currentEntity];
 		}
 		return parents;
 	}
