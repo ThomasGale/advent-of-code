@@ -16,6 +16,10 @@ namespace aoc::y2019::d07 {
 			return output;
 		}
 
+		bool IsHalted() {
+			return pState[pProg] == 99;
+		}
+
 		int RunProgram(int input)
 		{
 			std::bitset<3> modes;
@@ -102,6 +106,7 @@ namespace aoc::y2019::d07 {
 		std::vector<int> inputProgram;
 		std::transform(inputStrs.begin(), inputStrs.end(), std::back_inserter(inputProgram), [](auto& input) { return std::stoi(input); });
 
+		// Part 1. 
 		std::vector<int> phaseSeq{ 0,1,2,3,4 };
 		int bestOutput = 0;
 		do {
@@ -116,13 +121,38 @@ namespace aoc::y2019::d07 {
 		std::cout << "1. Highest signal that can be sent to the thrusters:\n";
 		std::cout << bestOutput << "\n";
 
-		phaseSeq = { 9,8,7,6,5 };
-		std::vector<IntCodeComputer> amplifiers;
-		for (auto _ : phaseSeq) {
-			amplifiers.push_back(IntCodeComputer(inputProgram));
-		}
+		// Part 2.
+		phaseSeq = { 5, 6, 7, 8, 9 };
+		bestOutput = 0;
+		do {
+			std::vector<IntCodeComputer> amplifiers;
+			for (auto _ : phaseSeq) {
+				amplifiers.push_back(IntCodeComputer(inputProgram));
+			}
 
-		std::cout << "2. ... :\n";
-		std::cout << "" << "\n";
+			bool initRun = true;
+			std::bitset<5> haltState = 0b00000;
+			int currentOutput = 0;
+			while (haltState != 0b11111) {
+				for (auto i = 0; i < phaseSeq.size(); ++i) {
+					if (!amplifiers[i].IsHalted()) {
+						if (initRun) {
+							currentOutput = amplifiers[i].RunProgram({ currentOutput, phaseSeq[i] });
+						}
+						else {
+							currentOutput = amplifiers[i].RunProgram(currentOutput);
+						}
+					}
+					else {
+						haltState[i] = 1;
+					}
+				}
+				initRun = false;
+			}
+			if (currentOutput > bestOutput) bestOutput = currentOutput;
+		} while (std::next_permutation(phaseSeq.begin(), phaseSeq.end()));
+
+		std::cout << "2. Highest signal that can be sent to the thrusters:\n";
+		std::cout << bestOutput << "\n";
 	}
 }
