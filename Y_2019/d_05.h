@@ -1,7 +1,5 @@
 #pragma once
 #include "default.h"
-#include <bitset>
-#include <set>
 
 namespace aoc::y2019::d05 {
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <bitset>
 #include <fstream>
 #include <iostream>
 #include <map>
