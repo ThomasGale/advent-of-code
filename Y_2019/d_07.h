@@ -26,7 +26,7 @@ namespace aoc::y2019::d07 {
 			int opCode = 0;
 
 			bool inputRead = false;
-			int output = 0;
+			int output = 0; // Current we only return the last output produces and ignore the rest.
 			while (true) {
 				if (pState[pProg] == 99) break; // Terminate
 
@@ -55,18 +55,12 @@ namespace aoc::y2019::d07 {
 					if (!inputRead) {
 						pState[pState[pProg + 1]] = input; inputRead = true;
 					} else {
-						//std::cout << "Enter input: ";
-						//std::cin >> inputStr;
-						//pState[pState[pProg + 1]] = std::stoi(inputStr);
-
-						// Pause execution untill new intput is ready.
-						return output;
+						return output; // Return until execution is resumed with new argument.
 					}
 					pProg += 2;
 					break;
 				case 4:
 					output = getValue(modes[0], pState[pProg + 1], pState);
-					//std::cout << output;
 					pProg += 2;
 					break;
 				case 5:
@@ -125,10 +119,7 @@ namespace aoc::y2019::d07 {
 		phaseSeq = { 5, 6, 7, 8, 9 };
 		bestOutput = 0;
 		do {
-			std::vector<IntCodeComputer> amplifiers;
-			for (auto _ : phaseSeq) {
-				amplifiers.push_back(IntCodeComputer(inputProgram));
-			}
+			std::vector<IntCodeComputer> amplifiers(phaseSeq.size(), IntCodeComputer(inputProgram));
 
 			bool initRun = true;
 			std::bitset<5> haltState = 0b00000;

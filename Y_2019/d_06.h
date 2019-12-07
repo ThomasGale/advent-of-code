@@ -6,8 +6,7 @@ namespace aoc::y2019::d06 {
 	int computeDistance(std::map<std::string, std::string>& orbitMap, const std::string& start, const std::string& end) {
 		int distance = 0;
 		std::string currentEntity = start;
-		while (true) {
-			if ((currentEntity == "COM") || (currentEntity == end)) break;
+		while ((currentEntity != "COM") && (currentEntity != end)) {
 			++distance;
 			currentEntity = orbitMap[currentEntity];
 		}
@@ -17,8 +16,7 @@ namespace aoc::y2019::d06 {
 	std::set<std::string> computeParents(std::map<std::string, std::string>& orbitMap, const std::string& entity) {
 		std::set<std::string> parents;
 		std::string currentEntity = entity;
-		while (true) {
-			if (currentEntity == "COM") break;
+		while (currentEntity != "COM") {
 			parents.insert(orbitMap[currentEntity]);
 			currentEntity = orbitMap[currentEntity];
 		}
