@@ -7,26 +7,26 @@ namespace aoc::y2019::d07 {
 	public:
 		IntCodeComputer(std::vector<int> startState) : pState(startState), pProg(0) {};
 
-		int RunProgram(std::vector<int> inputs) {
-			int output = 0;
-			while (inputs.size() > 0) {
-				output = RunProgram(inputs.back());
-				inputs.pop_back();
+		std::vector<int> RunProgram(std::vector<int> inputs) {
+			std::vector<int> totalOutputs;
+			for (auto input : inputs) {
+				auto outputs = RunProgram(input);
+				totalOutputs.insert(totalOutputs.begin(), outputs.begin(), outputs.end());
 			}
-			return output;
+			return totalOutputs;
 		}
 
 		bool IsHalted() {
 			return pState[pProg] == 99;
 		}
 
-		int RunProgram(int input)
+		std::vector<int> RunProgram(int input)
 		{
 			std::bitset<3> modes;
 			int opCode = 0;
 
 			bool inputRead = false;
-			int output = 0; // Current we only return the last output produces and ignore the rest.
+			std::vector<int> outputs;
 			while (true) {
 				if (pState[pProg] == 99) break; // Terminate
 
@@ -54,13 +54,14 @@ namespace aoc::y2019::d07 {
 				case 3:
 					if (!inputRead) {
 						pState[pState[pProg + 1]] = input; inputRead = true;
-					} else {
-						return output; // Return until execution is resumed with new argument.
+					}
+					else {
+						return outputs; // Provided single input already processed, return until execution is resumed with new argument.
 					}
 					pProg += 2;
 					break;
 				case 4:
-					output = getValue(modes[0], pState[pProg + 1], pState);
+					outputs.push_back(getValue(modes[0], pState[pProg + 1], pState));
 					pProg += 2;
 					break;
 				case 5:
@@ -81,7 +82,7 @@ namespace aoc::y2019::d07 {
 					throw std::runtime_error("Unrecognised opcode");
 				}
 			}
-			return output; // Return the last output.
+			return outputs; // Return the last output.
 		}
 	private:
 		std::vector<int> pState;
@@ -107,7 +108,7 @@ namespace aoc::y2019::d07 {
 			int currentOutput = 0;
 			for (auto phase : phaseSeq) {
 				IntCodeComputer comp(inputProgram);
-				currentOutput = comp.RunProgram({ currentOutput, phase });
+				currentOutput = comp.RunProgram({ phase, currentOutput }).front();
 			}
 			if (currentOutput > bestOutput) bestOutput = currentOutput;
 		} while (std::next_permutation(phaseSeq.begin(), phaseSeq.end()));
@@ -116,26 +117,20 @@ namespace aoc::y2019::d07 {
 		std::cout << bestOutput << "\n";
 
 		// Part 2.
-		phaseSeq = { 5, 6, 7, 8, 9 };
+		phaseSeq = { 5,6,7,8,9 };
 		bestOutput = 0;
 		do {
 			std::vector<IntCodeComputer> amplifiers(phaseSeq.size(), IntCodeComputer(inputProgram));
-
 			bool initRun = true;
-			std::bitset<5> haltState = 0b00000;
 			int currentOutput = 0;
-			while (haltState != 0b11111) {
+			while (true) {
+				if (amplifiers[0].IsHalted()) break; // If the first is complete we shouldn't run another iteration.
 				for (auto i = 0; i < phaseSeq.size(); ++i) {
-					if (!amplifiers[i].IsHalted()) {
-						if (initRun) {
-							currentOutput = amplifiers[i].RunProgram({ currentOutput, phaseSeq[i] });
-						}
-						else {
-							currentOutput = amplifiers[i].RunProgram(currentOutput);
-						}
+					if (initRun) {
+						currentOutput = amplifiers[i].RunProgram({ phaseSeq[i], currentOutput }).front();
 					}
 					else {
-						haltState[i] = 1;
+						currentOutput = amplifiers[i].RunProgram(currentOutput).front();
 					}
 				}
 				initRun = false;
@@ -143,7 +138,7 @@ namespace aoc::y2019::d07 {
 			if (currentOutput > bestOutput) bestOutput = currentOutput;
 		} while (std::next_permutation(phaseSeq.begin(), phaseSeq.end()));
 
-		std::cout << "2. Highest signal that can be sent to the thrusters:\n";
+		std::cout << "2. Highest amplified signal that can be sent to the thrusters:\n";
 		std::cout << bestOutput << "\n";
 	}
 }
