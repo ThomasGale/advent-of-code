@@ -29,7 +29,7 @@ namespace aoc::y2019::d08 {
 		void DrawLayer(int layerIndex) {
 			for (auto layerIt = _layers[layerIndex]; layerIt != _layers[layerIndex] + _size; ++layerIt) {
 				if (((layerIt - _layers[layerIndex]) % _width) == 0) std::cout << "\n";
-				std::cout << ((*layerIt == 1) ? "0" : " "); // White is a 0, black is left empty
+				std::cout << ((*layerIt == 1) ? "0" : " "); // White is a 0, black is left empty.
 			}
 			std::cout << "\n";
 		}

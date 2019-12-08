@@ -1,7 +1,7 @@
 #pragma once
 #include "default.h"
 
-namespace aoc::y2019::d01 {	
+namespace aoc::y2019::d09 {	
 	void calculate(std::istream& input) {
 		std::cout << " Day xx \n";
 

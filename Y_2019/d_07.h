@@ -20,7 +20,7 @@ namespace aoc::y2019::d07 {
 			return pState[pProg] == 99;
 		}
 
-		std::vector<int> RunProgram(int input)
+		std::vector<int> RunProgram(int input) // Run program optionally inserting single input. Will return if program needs more arguments or is complete.
 		{
 			std::bitset<3> modes;
 			int opCode = 0;
@@ -56,7 +56,7 @@ namespace aoc::y2019::d07 {
 						pState[pState[pProg + 1]] = input; inputRead = true;
 					}
 					else {
-						return outputs; // Provided single input already processed, return until execution is resumed with new argument.
+						return outputs; // The single input has already been processed, return until execution is resumed with new argument.
 					}
 					pProg += 2;
 					break;
@@ -124,13 +124,13 @@ namespace aoc::y2019::d07 {
 			bool initRun = true;
 			int currentOutput = 0;
 			while (true) {
-				if (amplifiers[0].IsHalted()) break; // If the first is complete we shouldn't run another iteration.
+				if (amplifiers[0].IsHalted()) break; // If the first is complete we shouldn't run another iteration through amplifiers.
 				for (auto i = 0; i < phaseSeq.size(); ++i) {
 					if (initRun) {
-						currentOutput = amplifiers[i].RunProgram({ phaseSeq[i], currentOutput }).front();
+						currentOutput = amplifiers[i].RunProgram({ phaseSeq[i], currentOutput }).front(); // Assuming single output.
 					}
 					else {
-						currentOutput = amplifiers[i].RunProgram(currentOutput).front();
+						currentOutput = amplifiers[i].RunProgram(currentOutput).front(); // Assuming single output.
 					}
 				}
 				initRun = false;
