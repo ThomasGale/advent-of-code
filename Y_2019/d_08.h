@@ -41,7 +41,7 @@ namespace aoc::y2019::d08 {
 	};
 
 	void calculate(std::istream& input) {
-		std::cout << " Day xx \n";
+		std::cout << "--- Day 8: Space Image Format ---\n";
 
 		std::string inputStr(std::istreambuf_iterator<char>(input), {});
 		std::vector<int> imageData;
@@ -75,7 +75,7 @@ namespace aoc::y2019::d08 {
 		std::cout << "1. On fewest 0 digit layer, 1 * 2 count checksum:\n";
 		std::cout << "Layer " << bestLayer << " checksum: " << bestLayerNum1s * bestLayerNum2s << "\n";
 
-		// Part 2.
+		// Part 2. Draw the flattened image.
 		Image image(imageData, width, height);
 		auto flatImage = image.Flatten();
 
