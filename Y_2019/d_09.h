@@ -1,7 +1,7 @@
 #pragma once
 #include "default.h"
 
-namespace aoc::y2019::d09 {	
+namespace aoc::y2019::d09 {
 
 	using bigint = long long;
 
@@ -50,16 +50,16 @@ namespace aoc::y2019::d09 {
 				switch (opCode)
 				{
 				case 1:
-					pState[pState[pProg + 3]] = getValue(modes[0], pState[pProg + 1], pState) + getValue(modes[1], pState[pProg + 2], pState);
+					setState(modes[2], getValue(modes[0], pState[pProg + 1]) + getValue(modes[1], pState[pProg + 2]));
 					pProg += 4;
 					break;
 				case 2:
-					pState[pState[pProg + 3]] = getValue(modes[0], pState[pProg + 1], pState) * getValue(modes[1], pState[pProg + 2], pState);
+					setState(modes[2], getValue(modes[0], pState[pProg + 1]) * getValue(modes[1], pState[pProg + 2]));
 					pProg += 4;
 					break;
 				case 3:
 					if (!inputRead) {
-						pState[pState[pProg + 1]] = input; inputRead = true;
+						setState(modes[0], input, 1);
 					}
 					else {
 						return outputs; // The single input has already been processed, return until execution is resumed with new argument.
@@ -67,25 +67,25 @@ namespace aoc::y2019::d09 {
 					pProg += 2;
 					break;
 				case 4:
-					outputs.push_back(getValue(modes[0], pState[pProg + 1], pState));
+					outputs.push_back(getValue(modes[0], pState[pProg + 1]));
 					pProg += 2;
 					break;
 				case 5:
-					pProg = ((getValue(modes[0], pState[pProg + 1], pState) != 0) ? getValue(modes[1], pState[pProg + 2], pState) : pProg + 3);
+					pProg = ((getValue(modes[0], pState[pProg + 1]) != 0) ? getValue(modes[1], pState[pProg + 2]) : pProg + 3);
 					break;
 				case 6:
-					pProg = ((getValue(modes[0], pState[pProg + 1], pState) == 0) ? getValue(modes[1], pState[pProg + 2], pState) : pProg + 3);
+					pProg = ((getValue(modes[0], pState[pProg + 1]) == 0) ? getValue(modes[1], pState[pProg + 2]) : pProg + 3);
 					break;
 				case 7:
-					pState[pState[pProg + 3]] = getValue(modes[0], pState[pProg + 1], pState) < getValue(modes[1], pState[pProg + 2], pState);
+					setState(modes[2], getValue(modes[0], pState[pProg + 1]) < getValue(modes[1], pState[pProg + 2]));
 					pProg += 4;
 					break;
 				case 8:
-					pState[pState[pProg + 3]] = getValue(modes[0], pState[pProg + 1], pState) == getValue(modes[1], pState[pProg + 2], pState);
+					setState(modes[2], getValue(modes[0], pState[pProg + 1]) == getValue(modes[1], pState[pProg + 2]));
 					pProg += 4;
 					break;
 				case 9:
-					relBase += getValue(modes[0], pState[pProg + 1], pState);
+					relBase += getValue(modes[0], pState[pProg + 1]);
 					pProg += 2;
 					break;
 				default:
@@ -99,16 +99,29 @@ namespace aoc::y2019::d09 {
 		int pProg = 0;
 		int relBase = 0;
 
-		inline bigint getValue(int mode, bigint instruction, const std::vector<bigint>& program) {
+		inline bigint getValue(int mode, bigint instruction) {
 			switch (mode) {
 			case 0: // Absolute Mode
-				return program[instruction];
+				return pState[instruction];
 			case 1: // Value Mode
 				return instruction;
 			case 2: // Relative Mode
-				return program[relBase + instruction];
+				return pState[relBase + instruction];
 			default:
-				throw new std::runtime_error("Unrecognised Mode");
+				throw new std::runtime_error("Unsupported Mode");
+			}
+		}
+
+		inline void setState(int mode, bigint value, int pPOffset = 3) {
+			switch (mode) {
+			case 0: // Absolute Mode
+				pState[pState[pProg + pPOffset]] = value;
+				break;
+			case 2: // Relative Mode
+				pState[pState[pProg + pPOffset] + relBase] = value;
+				break;
+			default:
+				throw new std::runtime_error("Unsupported Mode");
 			}
 		}
 	};
@@ -123,7 +136,6 @@ namespace aoc::y2019::d09 {
 		IntCodeComputer test(inputProgram);
 
 		auto output = test.RunProgram(1);
-		bool halted = test.IsHalted();
 		std::cout << "1. BOOST keycode :\n";
 		std::cout << output.front() << "\n";
 
