@@ -2,17 +2,13 @@
 #include "default.h"
 
 namespace aoc::y2019::d09 {
-
 	using bigint = long long;
 
 	class IntCodeComputer {
 	public:
-		IntCodeComputer(const std::vector<bigint>& startState) : pProg(0), relBase(0) {
-			pState = std::vector<bigint>(startState.size() * 5);
-			std::copy(startState.begin(), startState.end(), pState.begin());
-		};
+		IntCodeComputer(const std::vector<bigint>& startState) : pState(startState), pProg(0), relBase(0) {};
 
-		std::vector<bigint> RunProgram(std::vector<bigint> inputs) {
+		std::vector<bigint> RunProgram(std::vector<bigint> inputs) { // Run program optionally inserting inputs from vector in sequence. Will return if program needs more arguments or is complete.
 			std::vector<bigint> totalOutputs;
 			for (auto input : inputs) {
 				auto outputs = RunProgram(input);
@@ -21,9 +17,7 @@ namespace aoc::y2019::d09 {
 			return totalOutputs;
 		}
 
-		bool IsHalted() {
-			return pState[pProg] == 99;
-		}
+		bool IsHalted() { return pState[pProg] == 99; }
 
 		std::vector<bigint> RunProgram(bigint input = 0) // Run program optionally inserting single input. Will return if program needs more arguments or is complete.
 		{
@@ -43,51 +37,42 @@ namespace aoc::y2019::d09 {
 				else {
 					opCode = std::stoi(opCodeStr.substr(opCodeStr.size() - 2));
 					std::string modeStr = opCodeStr.substr(0, opCodeStr.size() - 2);
-					std::transform(modeStr.rbegin(), modeStr.rend(), modes.begin(), [](char modeC) { return modeC - '0'; }); // It's reversed.
+					std::transform(modeStr.rbegin(), modeStr.rend(), modes.begin(), [](char modeC) { return modeC - '0'; }); // It's reversed (mode for first arg is last val in string).
 				}
 
 				std::string inputStr;
 				switch (opCode)
 				{
-				case 1:
+				case 1: // ADD
 					setState(modes[2], getValue(modes[0], pState[pProg + 1]) + getValue(modes[1], pState[pProg + 2]));
-					pProg += 4;
-					break;
-				case 2:
+					pProg += 4; break;
+				case 2: // MUL
 					setState(modes[2], getValue(modes[0], pState[pProg + 1]) * getValue(modes[1], pState[pProg + 2]));
-					pProg += 4;
-					break;
-				case 3:
+					pProg += 4; break;
+				case 3: // IN
 					if (!inputRead) {
-						setState(modes[0], input, 1);
-					}
-					else {
+						setState(modes[0], input, 1); // Store Input.
+						inputRead = true;
+					} else {
 						return outputs; // The single input has already been processed, return until execution is resumed with new argument.
 					}
-					pProg += 2;
-					break;
-				case 4:
+					pProg += 2; break;
+				case 4: // OUT
 					outputs.push_back(getValue(modes[0], pState[pProg + 1]));
-					pProg += 2;
-					break;
-				case 5:
-					pProg = ((getValue(modes[0], pState[pProg + 1]) != 0) ? getValue(modes[1], pState[pProg + 2]) : pProg + 3);
-					break;
-				case 6:
-					pProg = ((getValue(modes[0], pState[pProg + 1]) == 0) ? getValue(modes[1], pState[pProg + 2]) : pProg + 3);
-					break;
-				case 7:
+					pProg += 2; break;
+				case 5: // JMP_NE
+					pProg = ((getValue(modes[0], pState[pProg + 1]) != 0) ? getValue(modes[1], pState[pProg + 2]) : pProg + 3); break;
+				case 6: // JMP_E
+					pProg = ((getValue(modes[0], pState[pProg + 1]) == 0) ? getValue(modes[1], pState[pProg + 2]) : pProg + 3); break;
+				case 7: // LESS_THAN
 					setState(modes[2], getValue(modes[0], pState[pProg + 1]) < getValue(modes[1], pState[pProg + 2]));
-					pProg += 4;
-					break;
-				case 8:
+					pProg += 4; break;
+				case 8: // EQUAL
 					setState(modes[2], getValue(modes[0], pState[pProg + 1]) == getValue(modes[1], pState[pProg + 2]));
-					pProg += 4;
-					break;
-				case 9:
+					pProg += 4; break;
+				case 9: // BASE_OFFSET
 					relBase += getValue(modes[0], pState[pProg + 1]);
-					pProg += 2;
-					break;
+					pProg += 2; break;
 				default:
 					throw std::runtime_error("Unrecognised opcode");
 				}
@@ -102,10 +87,12 @@ namespace aoc::y2019::d09 {
 		inline bigint getValue(int mode, bigint instruction) {
 			switch (mode) {
 			case 0: // Absolute Mode
+				if (instruction >= pState.size()) pState.resize(instruction + 1, 0); // Expand Memory if required
 				return pState[instruction];
 			case 1: // Value Mode
 				return instruction;
 			case 2: // Relative Mode
+				if (relBase + instruction >= pState.size()) pState.resize(relBase + instruction + 1, 0); // Expand Memory if required
 				return pState[relBase + instruction];
 			default:
 				throw new std::runtime_error("Unsupported Mode");
@@ -115,11 +102,11 @@ namespace aoc::y2019::d09 {
 		inline void setState(int mode, bigint value, int pPOffset = 3) {
 			switch (mode) {
 			case 0: // Absolute Mode
-				pState[pState[pProg + pPOffset]] = value;
-				break;
+				if (pState[pProg + pPOffset] >= pState.size()) pState.resize(pState[pProg + pPOffset] + 1, 0); // Expand Memory if required
+				pState[pState[pProg + pPOffset]] = value; break;
 			case 2: // Relative Mode
-				pState[pState[pProg + pPOffset] + relBase] = value;
-				break;
+				if (pState[pProg + pPOffset] + relBase >= pState.size()) pState.resize(pState[pProg + pPOffset] + relBase + 1, 0); // Expand Memory if required
+				pState[pState[pProg + pPOffset] + relBase] = value; break;
 			default:
 				throw new std::runtime_error("Unsupported Mode");
 			}
