@@ -81,18 +81,18 @@ namespace aoc::y2019::d09 {
 		}
 	private:
 		std::vector<bigint> pState;
-		int pProg = 0;
-		int relBase = 0;
+		bigint pProg = 0;
+		bigint relBase = 0;
 
 		inline bigint getValue(int mode, bigint instruction) {
 			switch (mode) {
 			case 0: // Absolute Mode
-				if (instruction >= pState.size()) pState.resize(instruction + 1, 0); // Expand Memory if required
+				if (instruction >= bigint(pState.size())) pState.resize(instruction + 1, 0); // Expand Memory if required
 				return pState[instruction];
 			case 1: // Value Mode
 				return instruction;
 			case 2: // Relative Mode
-				if (relBase + instruction >= pState.size()) pState.resize(relBase + instruction + 1, 0); // Expand Memory if required
+				if (relBase + instruction >= bigint(pState.size())) pState.resize(relBase + instruction + 1, 0); // Expand Memory if required
 				return pState[relBase + instruction];
 			default:
 				throw new std::runtime_error("Unsupported Mode");
@@ -102,10 +102,10 @@ namespace aoc::y2019::d09 {
 		inline void setState(int mode, bigint value, int pPOffset = 3) {
 			switch (mode) {
 			case 0: // Absolute Mode
-				if (pState[pProg + pPOffset] >= pState.size()) pState.resize(pState[pProg + pPOffset] + 1, 0); // Expand Memory if required
+				if (pState[pProg + pPOffset] >= bigint(pState.size())) pState.resize(pState[pProg + pPOffset] + 1, 0); // Expand Memory if required
 				pState[pState[pProg + pPOffset]] = value; break;
 			case 2: // Relative Mode
-				if (pState[pProg + pPOffset] + relBase >= pState.size()) pState.resize(pState[pProg + pPOffset] + relBase + 1, 0); // Expand Memory if required
+				if (pState[pProg + pPOffset] + relBase >= bigint(pState.size())) pState.resize(pState[pProg + pPOffset] + relBase + 1, 0); // Expand Memory if required
 				pState[pState[pProg + pPOffset] + relBase] = value; break;
 			default:
 				throw new std::runtime_error("Unsupported Mode");
