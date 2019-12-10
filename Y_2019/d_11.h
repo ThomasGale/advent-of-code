@@ -1,9 +1,10 @@
 #pragma once
 #include "default.h"
 
-namespace aoc::y2019::d00 {	
+namespace aoc::y2019::d11 {
+
 	void calculate(std::istream& input) {
-		std::cout << " Day xx \n";
+		std::cout << " Day 11 \n";
 
 		//std::string inputStr(std::istreambuf_iterator<char>(input), {});
 		//std::vector<std::string> inputStrs = aoc::utils::read_input(input);
