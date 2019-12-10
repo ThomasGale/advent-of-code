@@ -126,12 +126,12 @@ namespace aoc::y2019::d09 {
 		std::cout << output.front() << "\n";
 
 		IntCodeComputer comp2(inputProgram);
-		auto start = std::chrono::high_resolution_clock::now();
+		auto start = clock::now();
 		output = comp2.RunProgram(2);
-		auto stop = std::chrono::high_resolution_clock::now();
+		auto stop = clock::now();
 
 		std::cout << "2. Coordinates of the distress signal:\n";
 		std::cout << output.front() << "\n";
-		std::cout << "Timing: " << std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count() << " micro seconds\n";
+		PrintDuration(start, stop);
 	}
 }
