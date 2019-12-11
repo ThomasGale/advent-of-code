@@ -4,6 +4,7 @@ set(CMAKE_CXX_STANDARD 17)
 add_library (Y_2019
 STATIC
 "default.h"
+"IntCodeComputer.h" "IntCodeComputer.cpp"
 "d_01.h"
 "d_02.h"
 "d_03.h"
@@ -15,7 +16,7 @@ STATIC
 "d_09.h"
 "d_10.h"
 "d_11.h"
-"IntCodeComputer.h" "IntCodeComputer.cpp"
+"d_12.h"
 "y_2019.h" "y_2019.cpp"
 )
 
