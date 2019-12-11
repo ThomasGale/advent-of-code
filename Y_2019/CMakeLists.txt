@@ -15,6 +15,7 @@ STATIC
 "d_09.h"
 "d_10.h"
 "d_11.h"
+"IntCodeComputer.h" "IntCodeComputer.cpp"
 "y_2019.h" "y_2019.cpp"
 )
 
