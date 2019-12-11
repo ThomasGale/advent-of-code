@@ -31,7 +31,7 @@ namespace aoc::y2019::d11 {
 		std::pair<Loc, Loc> currentRobotOri({ 0, -1 }, { 1, 0 }); // Left handed cs. robot facing upwards.
 
 		while (!painterProgram1.IsHalted()) { // Assuming program will not halt after one iteration.
-			// Get current state on the hull
+			// Get current state on the hull.
 			auto currentHullPiece = hullState.find(currentRobotPosition);
 			std::vector<bigint> painterOutput;
 			if (currentHullPiece == hullState.end() || std::get<1>(*currentHullPiece) == 0) {
@@ -41,7 +41,7 @@ namespace aoc::y2019::d11 {
 				painterOutput = painterProgram1.RunProgram(1);
 			}
 
-			// Paint the hull
+			// Paint the hull.
 			if (int(painterOutput.at(0)) == 0) hullState[currentRobotPosition] = 0;
 			else if (int(painterOutput.at(0)) == 1) hullState[currentRobotPosition] = 1;
 			else throw std::runtime_error("Unrecognised painter colour command.");
@@ -50,7 +50,7 @@ namespace aoc::y2019::d11 {
 			if (int(painterOutput.at(1)) == 0) currentRobotOri = rotateLeft(currentRobotOri);
 			else if (int(painterOutput.at(1)) == 1) currentRobotOri = rotateRight(currentRobotOri);
 
-			// Move the robot forward (the first basic vector of orientation is forward.
+			// Move the robot forward (the first basis vector of orientation is forward).
 			setLX(currentRobotPosition, getLX(currentRobotPosition) + getLX(currentRobotOri.first));
 			setLY(currentRobotPosition, getLY(currentRobotPosition) + getLY(currentRobotOri.first));
 		}
