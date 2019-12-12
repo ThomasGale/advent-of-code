@@ -21,7 +21,7 @@ namespace aoc::y2019::d12 {
 		bool Moon::operator<(const Moon& rhs) const { return Id < rhs.Id; };
 	};
 
-	long long DimensionSearch(std::vector<std::pair<int, int>> initalPosVels) {
+	long long DimensionSearchForRepeat(std::vector<std::pair<int, int>> initalPosVels) {
 		auto currentPosVels(initalPosVels);
 		long long rep = 0;
 		while (true) {
@@ -86,20 +86,19 @@ namespace aoc::y2019::d12 {
 		std::cout << totalEnergy << "\n";
 
 		// Part 2.
-
 		// Simulate each dimension separately - as they are independent.
-		// Find the GCD of the step counts for each dimension when it loops back to initial state (this will be the only state in which subsequent states can occur that are duplicate).
 		std::vector<std::pair<int, int>> initX, initY, initZ;
-
 		for (auto& moon : initialState) {
 			initX.push_back({ moon.Pos.X, moon.Vel.X });
 			initY.push_back({ moon.Pos.Y, moon.Vel.Y} );
 			initZ.push_back({ moon.Pos.Z, moon.Vel.Z });
 		}
 
-		auto xRep = DimensionSearch(initX);
-		auto yRep = DimensionSearch(initY);
-		auto zRep = DimensionSearch(initZ);
+		auto xRep = DimensionSearchForRepeat(initX);
+		auto yRep = DimensionSearchForRepeat(initY);
+		auto zRep = DimensionSearchForRepeat(initZ);
+
+		// Find the GCD of the step counts for each dimension when it loops back to initial state (this will be the only state in which subsequent states can occur that are duplicate).
 		auto numberStepsBeforeSame = std::lcm(xRep, std::lcm(yRep, zRep));
 
 		std::cout << "2. Number of steps before same state reached again. :\n";
