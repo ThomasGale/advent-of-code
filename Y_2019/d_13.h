@@ -114,8 +114,11 @@ namespace aoc::y2019::d13 {
 		std::cout << numBlocks << "\n";
 
 		// Start arcade Game 
+		auto p2Start = clock::now();
 		BreakoutArcadeTerminal breakout(23, 41, IntCodeComputer(inputProgram));
 		breakout.BotPlay(false);
+		auto p2End = clock::now();
 		std::cout << "2. Final Score: " << breakout.GetScore() << "\n";
+		PrintDuration(p2Start, p2End);
 	}
 }

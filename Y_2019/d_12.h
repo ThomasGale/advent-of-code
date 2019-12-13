@@ -87,6 +87,7 @@ namespace aoc::y2019::d12 {
 
 		// Part 2.
 		// Simulate each dimension separately - as they are independent.
+		auto p2Start = clock::now();
 		std::vector<std::pair<int, int>> initX, initY, initZ;
 		for (auto& moon : initialState) {
 			initX.push_back({ moon.Pos.X, moon.Vel.X });
@@ -100,8 +101,10 @@ namespace aoc::y2019::d12 {
 
 		// Find the GCD of the step counts for each dimension when it loops back to initial state (this will be the only state in which subsequent states can occur that are duplicate).
 		auto numberStepsBeforeSame = std::lcm(xRep, std::lcm(yRep, zRep));
+		auto p2End = clock::now();
 
 		std::cout << "2. Number of steps before same state reached again. :\n";
 		std::cout << numberStepsBeforeSame << "\n";
+		PrintDuration(p2Start, p2End);
 	}
 }
