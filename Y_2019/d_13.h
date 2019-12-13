@@ -54,18 +54,18 @@ namespace aoc::y2019::d13 {
 		void ProcessOutput(const std::vector<bigint>& rawOutput) {
 			int numBlocks = 0;
 			for (auto i = 0; i < rawOutput.size() - 2; i += 3) {
-				if (rawOutput[i] == -1) currentScore = rawOutput[i + 2];
+				if (rawOutput[i] == -1) currentScore = int(rawOutput[i + 2]);
 				else {
-					outputState[{rawOutput[i], rawOutput[i + 1]}] = rawOutput[i + 2];
+					outputState[{int(rawOutput[i]), int(rawOutput[i + 1])}] = int(rawOutput[i + 2]);
 					// Update paddle and ball
-					if (rawOutput[i + 2] == 3) paddleX = rawOutput[i];
-					if (rawOutput[i + 2] == 4) ballX = rawOutput[i];
+					if (rawOutput[i + 2] == 3) paddleX = int(rawOutput[i]);
+					if (rawOutput[i + 2] == 4) ballX = int(rawOutput[i]);
 				}
 			}
 		}
 
 		void Render() {
-			for (auto y = 0; y < ScreenWidth; ++y) { // Draw tiles
+			for (auto y = 0; y < ScreenWidth; ++y) { // TODO: Replace with PDCurses.
 				for (auto x = 0; x < ScreenHeight; ++x) {
 					auto tile = outputState.find({ x, y });
 					if (tile == outputState.end()) std::cout << " ";
@@ -107,8 +107,8 @@ namespace aoc::y2019::d13 {
 		std::map<Loc, int> gameOutput;
 		int numBlocks = 0;
 		for (auto i = 0; i < rawGameOutput.size()-2; i+=3) {
-			gameOutput[{rawGameOutput[i], rawGameOutput[i + 1]}] = rawGameOutput[i + 2];
-			if (rawGameOutput[i + 2] == 2) ++numBlocks;
+			gameOutput[{int(rawGameOutput[i]), int(rawGameOutput[i + 1])}] = int(rawGameOutput[i + 2]);
+			if (int(rawGameOutput[i + 2]) == 2) ++numBlocks;
 		}
 		std::cout << "1. Blocks on screen when game exits :\n";
 		std::cout << numBlocks << "\n";
