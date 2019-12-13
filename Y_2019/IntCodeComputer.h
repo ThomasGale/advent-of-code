@@ -16,6 +16,8 @@ namespace aoc::y2019::intcc {
 
 		bool IsHalted() { return pState[pProg] == 99; };
 
+		void HackState(int address, bigint value) { pState.at(address) = value; };
+
 	private:
 		std::vector<bigint> pState;
 		bigint pProg = 0;

@@ -7,6 +7,92 @@ namespace aoc::y2019::d13 {
 	using namespace aoc::y2019::intcc;
 	using Loc = std::tuple<int, int>;
 
+	class BreakoutArcadeTerminal {
+	public:
+		BreakoutArcadeTerminal(int screenWidth, int screenHeight, IntCodeComputer game) : ScreenWidth(screenWidth), ScreenHeight(screenHeight), Game(game) {};
+
+		void Start() {
+			Game.HackState(0, 2); // Insert Coin.
+			std::string input;
+			while (true) {
+				std::cin >> input;
+				if (!std::cin) break;
+
+				switch (std::stoi(input)) { // Hacky Key Remap
+				case 1: Step(-1); break;
+				case 2: Step(1); break;
+				default: Step(0);
+				}
+
+				if (Game.IsHalted()) break; // Game has ended.
+			}
+		}
+
+		void BotPlay(bool render) {
+			Game.HackState(0, 2); // Insert Coin.
+			int input = 0;
+			while (true) {
+				Step(input, render);
+				input = (ballX < paddleX) ? -1 : (ballX > paddleX);
+				if (Game.IsHalted()) break; // Game has ended.
+			}
+
+		}
+
+		int GetScore() const { return currentScore; };
+
+	private:
+
+		void Step(int input, bool render = true) {
+			auto rawOutput = Game.RunProgram(input);
+			if (rawOutput.size() > 0) {
+				ProcessOutput(rawOutput);
+				if (render) Render();
+			}
+		}
+
+		void ProcessOutput(const std::vector<bigint>& rawOutput) {
+			int numBlocks = 0;
+			for (auto i = 0; i < rawOutput.size() - 2; i += 3) {
+				if (rawOutput[i] == -1) currentScore = rawOutput[i + 2];
+				else {
+					outputState[{rawOutput[i], rawOutput[i + 1]}] = rawOutput[i + 2];
+					// Update paddle and ball
+					if (rawOutput[i + 2] == 3) paddleX = rawOutput[i];
+					if (rawOutput[i + 2] == 4) ballX = rawOutput[i];
+				}
+			}
+		}
+
+		void Render() {
+			for (auto y = 0; y < ScreenWidth; ++y) { // Draw tiles
+				for (auto x = 0; x < ScreenHeight; ++x) {
+					auto tile = outputState.find({ x, y });
+					if (tile == outputState.end()) std::cout << " ";
+					else {
+						switch (tile->second) {
+						case 0: std::cout << " "; break;
+						case 1: std::cout << "#"; break;
+						case 2: std::cout << "B"; break;
+						case 3: std::cout << "_"; break;
+						case 4: std::cout << "0"; break;
+						}
+					}
+				}
+				std::cout << "\n";
+			}
+			std::cout << "Score: " << currentScore << "\n\n";
+		}
+
+		int ScreenWidth, ScreenHeight;
+		IntCodeComputer Game;
+
+		std::map<Loc, int> outputState;
+		int ballX;
+		int paddleX;
+		int currentScore = 0;
+	};
+
 	void calculate(std::istream& input) {
 		std::cout << " Day 13 \n";
 		std::string inputStr(std::istreambuf_iterator<char>(input), {});
@@ -27,7 +113,9 @@ namespace aoc::y2019::d13 {
 		std::cout << "1. Blocks on screen when game exits :\n";
 		std::cout << numBlocks << "\n";
 
-		std::cout << "2. ... :\n";
-		std::cout << "" << "\n";
+		// Start arcade Game 
+		BreakoutArcadeTerminal breakout(23, 41, IntCodeComputer(inputProgram));
+		breakout.BotPlay(false);
+		std::cout << "2. Final Score: " << breakout.GetScore() << "\n";
 	}
 }
