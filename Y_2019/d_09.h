@@ -3,7 +3,6 @@
 #include "IntCodeComputer.h"
 
 namespace aoc::y2019::d09 {
-	using bigint = long long;
 	using namespace aoc::y2019::intcc;
 
 	void calculate(std::istream& input) {

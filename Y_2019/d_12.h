@@ -6,9 +6,9 @@ namespace aoc::y2019::d12 {
 	struct Vec3 {
 		Vec3(int x = 0, int y = 0, int z = 0) : X(x), Y(y), Z(z) {};
 		int X, Y, Z;
-		bool Vec3::operator==(const Vec3& rhs) const { return X == rhs.X && Y == rhs.Y && Z == rhs.Z; };
-		Vec3 Vec3::operator+(const Vec3& rhs) const { return Vec3(X + rhs.X, Y + rhs.Y, Z + rhs.Z); };
-		Vec3 Vec3::operator-(const Vec3& rhs) const { return Vec3(X - rhs.X, Y - rhs.Y, Z - rhs.Z); };
+		bool operator==(const Vec3& rhs) const { return X == rhs.X && Y == rhs.Y && Z == rhs.Z; };
+		Vec3 operator+(const Vec3& rhs) const { return Vec3(X + rhs.X, Y + rhs.Y, Z + rhs.Z); };
+		Vec3 operator-(const Vec3& rhs) const { return Vec3(X - rhs.X, Y - rhs.Y, Z - rhs.Z); };
 		Vec3 Inverse() const { return Vec3(-X, -Y, -Z); };
 		int AbsSum() const { return std::abs(X) + std::abs(Y) + std::abs(Z); };
 	};
@@ -17,8 +17,8 @@ namespace aoc::y2019::d12 {
 		Moon(int id, Vec3 pos, Vec3 vel) : Id(id), Pos(pos), Vel(vel) {};
 		int Id;
 		Vec3 Pos, Vel;
-		bool Moon::operator==(const Moon& rhs) const { return Id == rhs.Id && Pos == rhs.Pos && Vel == rhs.Vel; };
-		bool Moon::operator<(const Moon& rhs) const { return Id < rhs.Id; };
+		bool operator==(const Moon& rhs) const { return Id == rhs.Id && Pos == rhs.Pos && Vel == rhs.Vel; };
+		bool operator<(const Moon& rhs) const { return Id < rhs.Id; };
 	};
 
 	long long DimensionSearchForRepeat(std::vector<std::pair<int, int>> initalPosVels) {

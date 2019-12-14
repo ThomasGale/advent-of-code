@@ -3,7 +3,6 @@
 #include "IntCodeComputer.h"
 
 namespace aoc::y2019::d11 {
-	using bigint = long long;
 	using namespace aoc::y2019::intcc;
 
 	using Loc = std::tuple<int, int>;

@@ -3,7 +3,6 @@
 #include "IntCodeComputer.h"
 
 namespace aoc::y2019::d13 {	
-	using bigint = long long;
 	using namespace aoc::y2019::intcc;
 	using Loc = std::tuple<int, int>;
 
@@ -52,7 +51,6 @@ namespace aoc::y2019::d13 {
 		}
 
 		void ProcessOutput(const std::vector<bigint>& rawOutput) {
-			int numBlocks = 0;
 			for (auto i = 0; i < rawOutput.size() - 2; i += 3) {
 				if (rawOutput[i] == -1) currentScore = int(rawOutput[i + 2]);
 				else {
@@ -94,7 +92,7 @@ namespace aoc::y2019::d13 {
 	};
 
 	void calculate(std::istream& input) {
-		std::cout << " Day 13 \n";
+		std::cout << "--- Day 13: Care Package ---\n";
 		std::string inputStr(std::istreambuf_iterator<char>(input), {});
 		std::vector<std::string> inputStrs = aoc::utils::split(inputStr, ',');
 		std::vector<bigint> inputProgram;

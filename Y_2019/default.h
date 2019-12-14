@@ -8,6 +8,7 @@
 #include <map>
 #include <numeric>
 #include <optional>
+#include <queue>
 #include <regex>
 #include <set>
 #include <sstream>
@@ -18,6 +19,7 @@
 #include "../Utilities/utils.hpp"
 
 namespace aoc::y2019 {
+
 	using clock = std::chrono::high_resolution_clock;
 
 	template<typename T>
@@ -29,5 +31,7 @@ namespace aoc::y2019 {
 	inline void PrintDuration(const T& start, const T& stop) {
 		std::cout << "Calculation duration: " << Duration(start, stop) / 1000 << " ms\n";
 	}
+
+	using bigint = long long;
 }
 
