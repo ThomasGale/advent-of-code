@@ -21,6 +21,7 @@ add_library (Utilities
 STATIC
 "reader.h" "reader.cpp"
 "utils.hpp"
+"visualiser.h"
 )
 
 target_link_libraries(Utilities
