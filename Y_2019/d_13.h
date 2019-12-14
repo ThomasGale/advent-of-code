@@ -1,38 +1,37 @@
 #pragma once
 #include "default.h"
 #include "IntCodeComputer.h"
+#include "curses.h"
 
-namespace aoc::y2019::d13 {	
+namespace aoc::y2019::d13 {
 	using namespace aoc::y2019::intcc;
 	using Loc = std::tuple<int, int>;
 
 	class BreakoutArcadeTerminal {
 	public:
-		BreakoutArcadeTerminal(int screenWidth, int screenHeight, IntCodeComputer game) : ScreenWidth(screenWidth), ScreenHeight(screenHeight), Game(game) {};
+		BreakoutArcadeTerminal(int screenWidth, int screenHeight, IntCodeComputer game, bool visible = true) :
+			Game(game), Visible(visible), window(screenWidth, screenHeight) {};
 
 		void Start() {
 			Game.HackState(0, 2); // Insert Coin.
 			std::string input;
 			while (true) {
-				std::cin >> input;
-				if (!std::cin) break;
-
-				switch (std::stoi(input)) { // Hacky Key Remap
-				case 1: Step(-1); break;
-				case 2: Step(1); break;
+				switch (window.GetCh()) { // Hacky Key Remap
+				case KEY_LEFT: Step(-1); break;
+				case KEY_RIGHT: Step(1); break;
 				default: Step(0);
 				}
-
 				if (Game.IsHalted()) break; // Game has ended.
+				std::this_thread::sleep_for(std::chrono::milliseconds(500)); // Make playable
 			}
 		}
 
-		void BotPlay(bool render) {
+		void BotPlay() {
 			Game.HackState(0, 2); // Insert Coin.
 			int input = 0;
 			while (true) {
-				Step(input, render);
-				input = (ballX < paddleX) ? -1 : (ballX > paddleX);
+				Step(input); // Game step.
+				input = (ballX < paddleX) ? -1 : (ballX > paddleX); // "AI"
 				if (Game.IsHalted()) break; // Game has ended.
 			}
 
@@ -41,12 +40,11 @@ namespace aoc::y2019::d13 {
 		int GetScore() const { return currentScore; };
 
 	private:
-
-		void Step(int input, bool render = true) {
+		void Step(int input) {
 			auto rawOutput = Game.RunProgram(input);
 			if (rawOutput.size() > 0) {
 				ProcessOutput(rawOutput);
-				if (render) Render();
+				if (Visible) Render();
 			}
 		}
 
@@ -55,36 +53,30 @@ namespace aoc::y2019::d13 {
 				if (rawOutput[i] == -1) currentScore = int(rawOutput[i + 2]);
 				else {
 					outputState[{int(rawOutput[i]), int(rawOutput[i + 1])}] = int(rawOutput[i + 2]);
-					// Update paddle and ball
-					if (rawOutput[i + 2] == 3) paddleX = int(rawOutput[i]);
+					if (rawOutput[i + 2] == 3) paddleX = int(rawOutput[i]); // Update paddle and ball
 					if (rawOutput[i + 2] == 4) ballX = int(rawOutput[i]);
 				}
 			}
 		}
 
 		void Render() {
-			for (auto y = 0; y < ScreenWidth; ++y) { // TODO: Replace with PDCurses.
-				for (auto x = 0; x < ScreenHeight; ++x) {
-					auto tile = outputState.find({ x, y });
-					if (tile == outputState.end()) std::cout << " ";
-					else {
-						switch (tile->second) {
-						case 0: std::cout << " "; break;
-						case 1: std::cout << "#"; break;
-						case 2: std::cout << "B"; break;
-						case 3: std::cout << "_"; break;
-						case 4: std::cout << "0"; break;
-						}
-					}
+			for (auto& tile : outputState) {
+				char c = ' ';
+				switch (tile.second) {
+				case 1: c = '#'; break;
+				case 2: c = 'B'; break;
+				case 3: c = '_'; break;
+				case 4: c = '0'; break;
 				}
-				std::cout << "\n";
+				window.SetChar(std::get<0>(tile.first), std::get<1>(tile.first), c);
 			}
-			std::cout << "Score: " << currentScore << "\n\n";
+			window.Update();
 		}
 
-		int ScreenWidth, ScreenHeight;
 		IntCodeComputer Game;
+		bool Visible;
 
+		aoc::utils::BasicWindow window;
 		std::map<Loc, int> outputState;
 		int ballX;
 		int paddleX;
@@ -104,17 +96,16 @@ namespace aoc::y2019::d13 {
 
 		std::map<Loc, int> gameOutput;
 		int numBlocks = 0;
-		for (auto i = 0; i < rawGameOutput.size()-2; i+=3) {
+		for (auto i = 0; i < rawGameOutput.size() - 2; i += 3) {
 			gameOutput[{int(rawGameOutput[i]), int(rawGameOutput[i + 1])}] = int(rawGameOutput[i + 2]);
 			if (int(rawGameOutput[i + 2]) == 2) ++numBlocks;
 		}
 		std::cout << "1. Blocks on screen when game exits :\n";
 		std::cout << numBlocks << "\n";
 
-		// Start arcade Game 
 		auto p2Start = clock::now();
-		BreakoutArcadeTerminal breakout(23, 41, IntCodeComputer(inputProgram));
-		breakout.BotPlay(false);
+		BreakoutArcadeTerminal breakout(23, 41, IntCodeComputer(inputProgram), false);
+		breakout.BotPlay(); // breakout.Start();
 		auto p2End = clock::now();
 		std::cout << "2. Final Score: " << breakout.GetScore() << "\n";
 		PrintDuration(p2Start, p2End);

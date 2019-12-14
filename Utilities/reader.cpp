@@ -4,8 +4,6 @@
 #include <sstream>
 #include <string>
 
-
-
 namespace aoc::utils {
 
 	std::vector<std::string> read_input(std::istream& ifs)

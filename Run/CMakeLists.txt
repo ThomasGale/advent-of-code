@@ -19,6 +19,7 @@ configure_file("../Y_2019/d_11.txt" "Y_2019/d_11.txt" COPYONLY)
 configure_file("../Y_2019/d_12.txt" "Y_2019/d_12.txt" COPYONLY)
 configure_file("../Y_2019/d_13.txt" "Y_2019/d_13.txt" COPYONLY)
 configure_file("../Y_2019/d_14.txt" "Y_2019/d_14.txt" COPYONLY)
+configure_file("../Y_2019/d_15.txt" "Y_2019/d_15.txt" COPYONLY)
 
 add_executable (Run
 "run.h" "run.cpp"

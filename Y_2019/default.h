@@ -13,10 +13,12 @@
 #include <set>
 #include <sstream>
 #include <string>
+#include <thread>
 #include <vector>
 
-#include "../Utilities/reader.h"
-#include "../Utilities/utils.hpp"
+#include "../reader.h"
+#include "../utils.hpp"
+#include "../basic_window.h"
 
 namespace aoc::y2019 {
 
