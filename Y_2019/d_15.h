@@ -13,6 +13,7 @@ namespace aoc::y2019::d15 {
 	inline void setLY(Loc& loc, int value) { std::get<1>(loc) = value; }
 
 	using Ori = std::pair<Loc, Loc>;
+	inline Ori rotateLeft(const Ori& ori) { return Ori({ -std::get<0>(ori.second), -std::get<1>(ori.second) }, { std::get<0>(ori.first), std::get<1>(ori.first) }); };
 	inline Ori rotateRight(const Ori& ori) {
 		return Ori({ std::get<0>(ori.second), std::get<1>(ori.second) }, { -std::get<0>(ori.first), -std::get<1>(ori.first) });
 	}
