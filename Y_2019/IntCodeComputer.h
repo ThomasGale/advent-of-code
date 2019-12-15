@@ -6,7 +6,7 @@ namespace aoc::y2019::intcc {
 
 	class IntCodeComputer {
 	public:
-
+		IntCodeComputer(const std::string& programString);
 		IntCodeComputer(const std::vector<bigint>& startState) : pState(startState), pProg(0), relBase(0) {};
 
 		std::vector<bigint> RunProgram(std::vector<bigint> inputs);

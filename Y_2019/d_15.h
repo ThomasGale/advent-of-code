@@ -1,7 +1,6 @@
 #pragma once
 #include "default.h"
 #include "IntCodeComputer.h"
-#include <random>
 
 namespace aoc::y2019::d15 {
 	using namespace aoc::y2019::intcc;
@@ -27,12 +26,9 @@ namespace aoc::y2019::d15 {
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 15: Oxygen System ---\n";
 		std::string inputStr(std::istreambuf_iterator<char>(input), {});
-		std::vector<std::string> inputStrs = aoc::utils::split(inputStr, ',');
-		std::vector<bigint> inputProgram;
-		std::transform(inputStrs.begin(), inputStrs.end(), std::back_inserter(inputProgram), [](auto& input) { return std::stoll(input); });
 
 		// Part 1.
-		IntCodeComputer droidProg1(inputProgram);
+		IntCodeComputer droidProg1(inputStr);
 		int windowX = 51, windowY = 51;
 		Loc droidPos(windowX / 2, windowY / 2);
 		Ori droidOri({ 0, -1 }, { 1, 0 }); // Coordinate system left-handed, top left (like in previous examples).

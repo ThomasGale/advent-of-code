@@ -2,6 +2,11 @@
 
 namespace aoc::y2019::intcc {
 
+	IntCodeComputer::IntCodeComputer(const std::string& programString) : pProg(0), relBase(0) {
+		std::vector<std::string> inputStrs = aoc::utils::split(programString, ',');
+		std::transform(inputStrs.begin(), inputStrs.end(), std::back_inserter(pState), [](auto& input) { return std::stoll(input); });
+	}
+
 	std::vector<bigint> IntCodeComputer::RunProgram(bigint input)
 	{
 		std::vector<int> modes(3, 0);
