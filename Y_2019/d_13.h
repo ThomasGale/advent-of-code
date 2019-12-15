@@ -86,11 +86,8 @@ namespace aoc::y2019::d13 {
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 13: Care Package ---\n";
 		std::string inputStr(std::istreambuf_iterator<char>(input), {});
-		std::vector<std::string> inputStrs = aoc::utils::split(inputStr, ',');
-		std::vector<bigint> inputProgram;
-		std::transform(inputStrs.begin(), inputStrs.end(), std::back_inserter(inputProgram), [](auto& input) { return std::stoll(input); });
 
-		IntCodeComputer gameTest1(inputProgram);
+		IntCodeComputer gameTest1(inputStr);
 		std::vector<bigint> rawGameOutput;
 		rawGameOutput = gameTest1.RunProgram();
 
@@ -104,7 +101,7 @@ namespace aoc::y2019::d13 {
 		std::cout << numBlocks << "\n";
 
 		auto p2Start = clock::now();
-		BreakoutArcadeTerminal breakout(23, 41, IntCodeComputer(inputProgram), false);
+		BreakoutArcadeTerminal breakout(23, 41, IntCodeComputer(inputStr), false);
 		breakout.BotPlay(); // breakout.Start();
 		auto p2End = clock::now();
 		std::cout << "2. Final Score: " << breakout.GetScore() << "\n";

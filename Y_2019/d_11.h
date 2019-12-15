@@ -18,11 +18,8 @@ namespace aoc::y2019::d11 {
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 11: Space Police ---\n";
 		std::string inputStr(std::istreambuf_iterator<char>(input), {});
-		std::vector<std::string> inputStrs = aoc::utils::split(inputStr, ',');
-		std::vector<bigint> inputProgram;
-		std::transform(inputStrs.begin(), inputStrs.end(), std::back_inserter(inputProgram), [](auto& input) { return std::stoll(input); });
 
-		IntCodeComputer painterProgram1(inputProgram);
+		IntCodeComputer painterProgram1(inputStr);
 
 		std::map<Loc, int> hullState; // Empty or 0 is unpainted, 1 is white painted areas.
 		hullState[{0, 0}] = 1; // Part 1 = 0, Part 2 = 1.
