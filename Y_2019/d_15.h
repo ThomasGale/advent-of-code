@@ -44,10 +44,10 @@ namespace aoc::y2019::d15 {
 		while (true) {
 
 			// Move droid in current direction
-			if (getLX(droidOri.first) == 1) currStatus = droidProg1.RunProgram(4).front(); // Move East (right)
-			else if (getLX(droidOri.first) == -1) currStatus = droidProg1.RunProgram(3).front(); // Move West (left)
-			else if (getLY(droidOri.first) == 1) currStatus = droidProg1.RunProgram(2).front(); // Move South (down)
-			else if (getLY(droidOri.first) == -1) currStatus = droidProg1.RunProgram(1).front(); // Move North (up)
+			if (getLX(droidOri.first) == 1) currStatus = (int)droidProg1.RunProgram(4).front(); // Move East (right)
+			else if (getLX(droidOri.first) == -1) currStatus =(int)droidProg1.RunProgram(3).front(); // Move West (left)
+			else if (getLY(droidOri.first) == 1) currStatus = (int)droidProg1.RunProgram(2).front(); // Move South (down)
+			else if (getLY(droidOri.first) == -1) currStatus = (int)droidProg1.RunProgram(1).front(); // Move North (up)
 
 			// Movement status update.
 			if (currStatus == 0) { // Wall hit
