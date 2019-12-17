@@ -22,6 +22,9 @@ STATIC
 "reader.h" "reader.cpp"
 "utils.hpp"
 "basic_window.h" "basic_window.cpp"
+"vec2.h" 
+"vec3.h"
+"mat2x2.h"
 )
 
 target_link_libraries(Utilities

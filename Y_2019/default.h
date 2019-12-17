@@ -20,6 +20,8 @@
 #include "../reader.h"
 #include "../utils.hpp"
 #include "../basic_window.h"
+#include "../vec2.h"
+#include "../mat2x2.h"
 
 namespace aoc::y2019 {
 
