@@ -8,15 +8,14 @@ namespace aoc::utils {
 		initscr();
 		resize_term(height, width);
 		keypad(stdscr, TRUE);
-		printw("PDCurses basic window!");
 	}
 
 	BasicWindow::~BasicWindow() {
 		endwin();
 	}
 
-	void BasicWindow::SetChar(int col, int line, char cVal) {
-		mvaddch(line, col, cVal);
+	void BasicWindow::SetChar(int x, int y, char cVal) {
+		mvaddch(x, y, cVal);
 	}
 
 	int BasicWindow::GetCh() {
