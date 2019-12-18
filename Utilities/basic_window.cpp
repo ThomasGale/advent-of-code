@@ -6,7 +6,7 @@ namespace aoc::utils {
 
 	BasicWindow::BasicWindow(int width, int height) {
 		initscr();
-		resize_term(width, height);
+		resize_term(height, width);
 		keypad(stdscr, TRUE);
 		printw("PDCurses basic window!");
 	}

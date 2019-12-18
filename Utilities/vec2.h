@@ -14,7 +14,7 @@ namespace aoc::utils {
 
 	struct Vec2LessComp {
 		bool operator() (const Vec2& lhs, const Vec2& rhs) const {
-			return lhs.X < rhs.X || (!(lhs.X > rhs.X) && lhs.Y < rhs.Y); // Lexographical compare.
+			return lhs.X < rhs.X || (!(lhs.X > rhs.X) && lhs.Y < rhs.Y); // Lexicographical compare.
 		}
 	};
 }
