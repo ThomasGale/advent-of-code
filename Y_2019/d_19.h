@@ -44,31 +44,46 @@ namespace aoc::y2019::d19 {
 		std::cout << tractorBeamAffectedPoints << "\n";
 
 		// Part 2. 
-		double beamGrowthWidthPerY = ((double)xb2 - (double)xb1) / 50.0;
-		double beamX1MovePerY = ((double)xb1) / 50.0;
-		double beamX2MovePerY = ((double)xb2) / 50.0;
+		double beamGrowthWidthPerY = ((double)xb2 - (double)xb1) / 50.0; // Approx growth of width of beam.
+		double beamX1MovePerY = ((double)xb1) / 50.0; // Approx grad of upper beam
+		double beamX2MovePerY = ((double)xb2) / 50.0; // Approx grad of lower beam
+		double beamAvCentrePerY = (beamX1MovePerY + beamX2MovePerY) / 2.0; // Approx grad of beam centre.
 		
-		int yTest = int(100.0 / beamGrowthWidthPerY); // Starting position at least 100.
-		int x1PosAvail = 0;
-		int x1PosNeeded = -1;
-		while (x1PosNeeded < x1PosAvail) {
-			//int x1PosAtYTest = beamX1MovePerY * yTest;
-			int x2PosAtYTest = beamX2MovePerY * yTest;
-
-			x1PosAvail = beamX1MovePerY * (yTest + 100);
-			x1PosNeeded = (x2PosAtYTest - 100);
-			++yTest;
+		int squareSize = 100;
+		int ySqrTop = int(double(squareSize) / beamGrowthWidthPerY); // Starting position of Y..
+		int xSqrR;
+		int xSqrL;
+		int ySqrBot;
+		while (true) {
+			xSqrR = beamAvCentrePerY * ySqrTop; // Starting position
+			int sqrTopR = 1;
+			while (true) { // Search for top right of square in beam.
+				IntCodeComputer test(tractorProg1);
+				test.RunProgram(xSqrR);
+				sqrTopR = test.RunProgram(ySqrTop).front();
+				if (sqrTopR == 0) break;
+				++xSqrR;
+			}
+			xSqrL = xSqrR - squareSize;
+			ySqrBot = ySqrTop; // Starting position
+			int sqrBotL = 1;
+			while (true) { // Search for bottom left square in beam.
+				IntCodeComputer test(tractorProg1);
+				test.RunProgram(xSqrL);
+				sqrBotL = test.RunProgram(ySqrBot).front();
+				if (sqrBotL == 0) break;
+				++ySqrBot;
+			}
+			if (ySqrBot - ySqrTop >= squareSize) break;
+			++ySqrTop; // Step down search.
 		}
-		int finalX = (beamX2MovePerY * yTest) - 100;
-
+	
 		// Test with tractor beam.
 		window.Clear(50, 50);
 
 		// TEST
-		auto XTest = finalX + 2;
-		auto YTest = yTest + 100 + 1;
-		//auto XTest = 25;
-		//auto YTest = 55;
+		auto XTest = xSqrL + squareSize;
+		auto YTest = ySqrTop;
 		for (auto x = 0; x < 50; ++x) {
 			for (auto y = 0; y < 50; ++y) {
 				auto xTest = x + XTest - 25;
@@ -77,12 +92,16 @@ namespace aoc::y2019::d19 {
 				test.RunProgram(xTest);
 				auto output = test.RunProgram(yTest).front();
 				window.SetChar(x, y, (output == 0 ? '.' : '#'));
+				if (xTest >= xSqrL && xTest < xSqrL + squareSize && yTest >= ySqrTop && yTest < ySqrTop + squareSize) {
+					window.SetChar(x, y, 'O');
+				}
+				//if (x == 25 & y == 25) window.SetChar(25, 25, 'X');
 			}
-		}
-		window.SetChar(25, 25, 'X');
+		};
 		window.Update();
 
 		std::cout << "2. Coordinates of square location:\n";
-		std::cout << "X: " << finalX << " Y: " << yTest << " multiple sum: " << finalX * 10000 + yTest + 1 << "\n";
+		std::cout << "X: " << xSqrL << " Y: 9" << ySqrTop << " multiple sum: " << (xSqrL * 10000) + ySqrTop << "\n";
+		// 10771728 Wrong.
 	}
 }
