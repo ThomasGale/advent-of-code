@@ -75,13 +75,13 @@ namespace aoc::y2019::d19 {
 				++ySqrBot;
 			}
 			if (ySqrBot - ySqrTop >= squareSize) break;
-			++ySqrTop; // Step down search.
+			++ySqrTop; // Step down search in Y.
 		}
 	
 		// Test with tractor beam.
 		window.Clear(50, 50);
 
-		// TEST
+		// Test plot (for small squares).
 		auto XTest = xSqrL + squareSize;
 		auto YTest = ySqrTop;
 		for (auto x = 0; x < 50; ++x) {
@@ -95,7 +95,6 @@ namespace aoc::y2019::d19 {
 				if (xTest >= xSqrL && xTest < xSqrL + squareSize && yTest >= ySqrTop && yTest < ySqrTop + squareSize) {
 					window.SetChar(x, y, 'O');
 				}
-				//if (x == 25 & y == 25) window.SetChar(25, 25, 'X');
 			}
 		};
 		window.Update();
