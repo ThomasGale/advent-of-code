@@ -11,12 +11,13 @@ namespace aoc::y2019::intcc {
 
 		std::vector<bigint> RunProgram(std::vector<bigint> inputs);
 
-		// Run program optionally inserting single input. Will return if program needs more arguments or is complete.
 		std::vector<bigint> RunProgram(bigint input = 0);
 
 		bool IsHalted() { return pState[pProg] == 99; };
 
 		void HackState(int address, bigint value) { pState.at(address) = value; };
+
+		void SetProgPoint(bigint pos) { pProg = pos; };
 
 	private:
 		std::vector<bigint> pState;

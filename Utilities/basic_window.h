@@ -10,8 +10,10 @@ namespace aoc::utils {
 		BasicWindow(const BasicWindow&) = delete;
 		BasicWindow& operator=(const BasicWindow&) = delete;
 
-		void SetChar(int col, int line, char cVal);
+		// Lhs cs, top left.
+		void SetChar(int x, int y, char cVal);
 		int GetCh();
+		void Clear(int width, int height);
 		void Update();
 	private:
 	};

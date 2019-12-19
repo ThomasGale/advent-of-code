@@ -7,6 +7,15 @@ namespace aoc::y2019::intcc {
 		std::transform(inputStrs.begin(), inputStrs.end(), std::back_inserter(pState), [](auto& input) { return std::stoll(input); });
 	}
 
+	std::vector<bigint> IntCodeComputer::RunProgram(std::vector<bigint> inputs) {
+		std::vector<bigint> totalOutputs;
+		for (auto input : inputs) {
+			auto outputs = RunProgram(input);
+			totalOutputs.insert(totalOutputs.begin(), outputs.begin(), outputs.end());
+		}
+		return totalOutputs;
+	}
+
 	std::vector<bigint> IntCodeComputer::RunProgram(bigint input)
 	{
 		std::vector<int> modes(3, 0);
@@ -67,7 +76,7 @@ namespace aoc::y2019::intcc {
 			}
 		}
 		return outputs;
-	}
+	}	
 
 	inline bigint IntCodeComputer::getValue(int mode, bigint instruction) {
 		switch (mode) {

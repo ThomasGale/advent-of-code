@@ -14,12 +14,22 @@ namespace aoc::utils {
 		endwin();
 	}
 
+	// Lhs cs, top left.
 	void BasicWindow::SetChar(int x, int y, char cVal) {
-		mvaddch(x, y, cVal);
+		mvaddch(y, x, cVal);
 	}
 
 	int BasicWindow::GetCh() {
 		return getch();
+	}
+
+	void BasicWindow::Clear(int width, int height) {
+		for (auto x = 0; x < width; ++x) {
+			for (auto y = 0; y < height; ++y) {
+				SetChar(x, y, ' ');
+			}
+		}
+		Update();
 	}
 
 	void BasicWindow::Update() {
