@@ -11,7 +11,7 @@ namespace aoc::utils {
 		BasicWindow& operator=(const BasicWindow&) = delete;
 
 		// Lhs cs, top left.
-		void SetChar(int x, int y, char cVal);
+		void SetChar(int x, int y, char cVal, int colour = 0);
 		int GetCh();
 		void Clear(int width, int height);
 		void Update();

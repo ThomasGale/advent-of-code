@@ -6,6 +6,12 @@ namespace aoc::utils {
 
 	BasicWindow::BasicWindow(int width, int height) {
 		initscr();
+		start_color();
+		init_pair(0, COLOR_WHITE, COLOR_BLACK); // Normal
+		init_pair(1, COLOR_GREEN, COLOR_BLACK); // Accent
+		init_pair(2, COLOR_WHITE, COLOR_CYAN); // Active
+		init_pair(3, COLOR_WHITE, COLOR_YELLOW); // Highlight
+
 		resize_term(height, width);
 		keypad(stdscr, TRUE);
 	}
@@ -15,8 +21,10 @@ namespace aoc::utils {
 	}
 
 	// Lhs cs, top left.
-	void BasicWindow::SetChar(int x, int y, char cVal) {
+	void BasicWindow::SetChar(int x, int y, char cVal, int colour) {
+		attron(COLOR_PAIR(colour));
 		mvaddch(y, x, cVal);
+		attroff(COLOR_PAIR(colour));
 	}
 
 	int BasicWindow::GetCh() {
