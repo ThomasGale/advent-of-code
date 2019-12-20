@@ -6,6 +6,7 @@ namespace aoc::utils {
 		Vec2(int x = 0, int y = 0) : X(x), Y(y) {};
 		int X, Y;
 		bool operator==(const Vec2& rhs) const { return X == rhs.X && Y == rhs.Y; };
+		bool operator!=(const Vec2& rhs) const { return !(*this == rhs); };
 		Vec2 operator+(const Vec2& rhs) const { return Vec2(X + rhs.X, Y + rhs.Y); };
 		Vec2 operator-(const Vec2& rhs) const { return Vec2(X - rhs.X, Y - rhs.Y); };
 		Vec2 Inverse() const { return Vec2(-X, -Y); };

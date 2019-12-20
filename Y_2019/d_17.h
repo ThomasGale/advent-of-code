@@ -53,7 +53,7 @@ namespace aoc::y2019::d17 {
 
 
 
-			int i = 0;
+			//int i = 0;
 
 			return segments;
 		}
