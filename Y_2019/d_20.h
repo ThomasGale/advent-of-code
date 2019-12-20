@@ -70,7 +70,8 @@ namespace aoc::y2019::d20 {
 				if (up != maze.end() && IsCapLetter(up->second) && down != maze.end() && down->second == '.') {
 					if (down->first.Y < height / 2) {
 						portalOutIds.insert({ down->first, std::string{ (char)up->second, (char)point.second } });
-					} else {
+					}
+					else {
 						portalInIds.insert({ down->first, std::string{ (char)up->second, (char)point.second } });
 					}
 				}
@@ -78,7 +79,8 @@ namespace aoc::y2019::d20 {
 				if (up != maze.end() && up->second == '.' && down != maze.end() && IsCapLetter(down->second)) {
 					if (down->first.Y < height / 2) {
 						portalInIds.insert({ up->first, std::string{ (char)point.second, (char)down->second } });
-					} else {
+					}
+					else {
 						portalOutIds.insert({ up->first, std::string{ (char)point.second, (char)down->second } });
 					}
 				}
@@ -86,7 +88,8 @@ namespace aoc::y2019::d20 {
 				if (left != maze.end() && IsCapLetter(left->second) && right != maze.end() && right->second == '.') {
 					if (right->first.X < width / 2) {
 						portalOutIds.insert({ right->first, std::string{ (char)left->second, (char)point.second } });
-					} else {
+					}
+					else {
 						portalInIds.insert({ right->first, std::string{ (char)left->second, (char)point.second } });
 					}
 				}
@@ -94,13 +97,14 @@ namespace aoc::y2019::d20 {
 				if (left != maze.end() && left->second == '.' && right != maze.end() && IsCapLetter(right->second)) {
 					if (right->first.X < width / 2) {
 						portalInIds.insert({ left->first, std::string{ (char)point.second, (char)right->second } });
-					} else {
+					}
+					else {
 						portalOutIds.insert({ left->first, std::string{ (char)point.second, (char)right->second } });
 					}
 				}
 			}
 		}
-		
+
 		// Create portal mapping.
 		Vec2 start, end;
 		std::map<Vec2, Vec2, Vec2LessComp> portalOutToInMap;
@@ -140,8 +144,8 @@ namespace aoc::y2019::d20 {
 		for (auto i = 0; i < corridors.size(); ++i) {
 			adjCorr[i] = std::vector<int>{};
 			for (auto j = 0; j < corridors.size(); ++j) { // Check other normal corridors.
-				if (i == j) continue;				
-				if (IsAbove(corridors[i].Pos, corridors[j].Pos)) adjCorr[i].push_back(j); 
+				if (i == j) continue;
+				if (IsAbove(corridors[i].Pos, corridors[j].Pos)) adjCorr[i].push_back(j);
 				if (IsBelow(corridors[i].Pos, corridors[j].Pos)) adjCorr[i].push_back(j);
 				if (IsLeft(corridors[i].Pos, corridors[j].Pos)) adjCorr[i].push_back(j);
 				if (IsRight(corridors[i].Pos, corridors[j].Pos)) adjCorr[i].push_back(j);
@@ -164,73 +168,53 @@ namespace aoc::y2019::d20 {
 			if (corridors[i].Pos == end) endI = i;
 		}
 
-		// TEST.
-		int testCorrI = 253;
-		window.SetChar(corridors[testCorrI].Pos.X, corridors[testCorrI].Pos.Y, 'X', 3);
-		for (auto adj : adjCorr[testCorrI]) {
-	    	window.SetChar(corridors[adj].Pos.X, corridors[adj].Pos.Y, 'A', 2);
-		}
-		window.Update();
-
 		// BFS
 		corridors[startI].Colour = 1;
 		corridors[startI].Dist = 0;
-		
+
 		std::queue<std::pair<int, int>> tips; // level and index.
 		tips.push({ 0, startI });
 		int currI;
 		int currLevel; // Part 2.
-		std::vector<std::vector<Vertex>> corridorLevels{ corridors }; // Track all levels of corridors init with level 0.
-		int depthLimit = 30;
+		int depthLimit = 100;
+		std::vector<std::vector<Vertex>> corridorLevels(depthLimit + 1, corridors); // Track all levels of corridors init with level 0.
 
 		while (true && !tips.empty()) {
 			std::tie<int, int>(currLevel, currI) = tips.front();
 			tips.pop();
-			if (currLevel >= corridorLevels.size()) corridorLevels.push_back(corridors); // Add a new level.
 
-			if (currLevel < 10) {
-				window.SetChar(corridorLevels[currLevel][currI].Pos.X, corridorLevels[currLevel][currI].Pos.Y, '0' + currLevel, 3);
-				window.Update();
-			}
-
-			for (auto adj :adjCorr[currI]) {
-				if (corridorLevels[currLevel][adj].Colour == 0) { // If unvisited
+			for (auto adj : adjCorr[currI]) {
+				// Check for level change
+				if (corridorLevels[currLevel][currI].LayerCh == +1 && corridorLevels[currLevel][adj].LayerCh == -1) { // We are at inside ring.
+					if (currLevel + 1 <= depthLimit && corridorLevels[currLevel + 1][adj].Colour == 0) { // Level depth
+						corridorLevels[currLevel + 1][adj].Colour = 1; // Mark as visited.
+						corridorLevels[currLevel + 1][adj].Dist = corridorLevels[currLevel][currI].Dist + 1;
+						corridorLevels[currLevel + 1][adj].Pre = currI;
+						tips.push({ currLevel + 1,  adj });
+					}
+				}
+				else if (corridorLevels[currLevel][currI].LayerCh == -1 && corridorLevels[currLevel][adj].LayerCh == +1) {  // We are at outside ring
+					if (currLevel >= 1 && corridorLevels[currLevel - 1][adj].Colour == 0) { // There is no level outer than 0.
+						corridorLevels[currLevel - 1][adj].Colour = 1; // Mark as visited.
+						corridorLevels[currLevel - 1][adj].Dist = corridorLevels[currLevel][currI].Dist + 1;
+						corridorLevels[currLevel - 1][adj].Pre = currI;
+						tips.push({ currLevel - 1,  adj });
+					}
+				}
+				else if (corridorLevels[currLevel][adj].Colour == 0) { // Not at ring portal
 					corridorLevels[currLevel][adj].Colour = 1; // Mark as visited.
 					corridorLevels[currLevel][adj].Dist = corridorLevels[currLevel][currI].Dist + 1;
 					corridorLevels[currLevel][adj].Pre = currI;
-					// Check for level change
-					if (corridorLevels[currLevel][currI].LayerCh == +1 && corridorLevels[currLevel][adj].LayerCh == -1) { // We are at inside ring.
-						if (currLevel + 1 <= depthLimit) tips.push({ currLevel + 1,  adj }); // Adding a depth limit.
-					} else if (corridorLevels[currLevel][currI].LayerCh == -1 && corridorLevels[currLevel][adj].LayerCh == +1) {  // We are at outside ring
-						if (currLevel >= 1)	tips.push({currLevel - 1,  adj }); // There is no layer outer than 0.
-					} else { // Not at ring portal
-						tips.push({ currLevel,  adj });
-					}
-					
+					tips.push({ currLevel,  adj });
+				}
+
+				if (currLevel == 0 && corridorLevels[currLevel][adj].Pos == end) { // Break condition, we have reached the end.
+					break;
 				}
 			}
 
-			if (currLevel == 0 && corridorLevels[currLevel][currI].Pos == end) { // Break condition, we have reached the end.
-				break;
-			}
-
 			corridorLevels[currLevel][currI].Colour = 2; // Completed.
-			if (currLevel < 10) {
-				window.SetChar(corridorLevels[currLevel][currI].Pos.X, corridorLevels[currLevel][currI].Pos.Y, '0' + currLevel, 2);
-				window.Update();
-			}
 		}
-
-		// More Testing
-		for (auto& corridor : corridorLevels) {
-			window.Clear(width, height);
-			for (auto& vert : corridor) {
-				if (vert.Dist != -1) window.SetChar(vert.Pos.X, vert.Pos.Y,  (vert.Dist % 10) + '0', 1);
-			}
-			window.Update();
-		}
-		
-
 
 		std::cout << "2. Steps it takes to get from the open tile marked AA to the open tile marked ZZ on outer layer. :\n";
 		std::cout << corridorLevels[0][endI].Dist << "\n";
