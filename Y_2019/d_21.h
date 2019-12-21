@@ -48,14 +48,14 @@ namespace aoc::y2019::d21 {
 
 		// Part 1.
 		std::vector<std::string> part1Input{
-			"NOT T T", // Sense up coming gap.
-			"AND A T", // ..
-			"AND B T", // ..
-			"AND C T", // ..
-			"NOT T T", // If T = 1, there is a gap coming up.
-			"NOT J J", // Only jump if landing spot.
+			"NOT T T", // .. Sense up coming gap.
+			"AND A T", // .. T = A
+			"AND B T", // .. T = A & B
+			"AND C T", // .. T = A & B & C
+			"NOT T T", // .. T = !A OR !B OR !C (If T = 1, there is a gap coming up.)
+			"NOT J J", // .. Only jump if landing spot.
 			"AND D J", // ..
-			"AND T J", // Combine gap detection and landing spot.
+			"AND T J", // .. Combine gap detection and landing spot.
 			"WALK"
 		};
 
@@ -83,19 +83,17 @@ namespace aoc::y2019::d21 {
 		*/
 
 		std::vector<std::string> part2Input{
-			"NOT T T", // Sense up coming gap.
-			"AND A T", // ..
-			"AND B T", // ..
-			"AND C T", // ..
-			"NOT T T", // If T = 1, there is a gap coming up.
-			"NOT J J", // Only jump if landing spot.
-			"AND D J", // ..
-			"AND T J", // Combine gap detection and landing spot.
+			"NOT T T", // .. Sense up coming gap.
+			"AND A T", // .. T = A
+			"AND B T", // .. T = A & B
+			"AND C T", // .. T = A & B & C
+			"NOT T T", // .. T = !A OR !B OR !C (If T = 1, there is a gap coming up.)
+			"OR E J",  // .. J = E (Check for slide space)
+			"OR H J",  // .. J = E OR H (Check for slide space or landing after second jump)
+            "AND D J", // .. Combine gap detection and first landing spot
+			"AND T J", // .. Combine gap detection, first landing spot and second landing spot.
 			"RUN"
 		};
-
-		// Notes, we may need to now build a method for generating inputs. There is a combinatorial set of gap pairs that will need to be detected by the spring bot script to deduce when is the
-		// best time to jump.
 
 		IntCodeComputer sprBotP2(inputStr);
 		auto part2InputRaw = ConvertSpringScriptToRaw(part2Input);
