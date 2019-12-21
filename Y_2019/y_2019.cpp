@@ -21,6 +21,7 @@
 #include "d_19.h"
 #include "d_20.h"
 #include "d_21.h"
+#include "d_22.h"
 
 namespace aoc::y2019 {
 	void calculate(int day, std::istream& input) {
@@ -47,6 +48,7 @@ namespace aoc::y2019 {
 		case 19: aoc::y2019::d19::calculate(input); break;
 		case 20: aoc::y2019::d20::calculate(input); break;
 		case 21: aoc::y2019::d21::calculate(input); break;
+		case 22: aoc::y2019::d22::calculate(input); break;
 		default:
 			throw std::runtime_error("Unrecognised day");
 		}
