@@ -16,6 +16,67 @@ namespace aoc::y2019::intcc {
 		return totalOutputs;
 	}
 
+	// Hacked in for day 23.
+	bigint IntCodeComputer::StepProgram(bigint input) {
+		std::vector<int> modes(3, 0);
+		int opCode = 0;
+
+		bool inputRead = false;
+		bigint output = -1;
+		if (pState[pProg] == 99) return output; // Terminate
+
+		std::string opCodeStr(std::to_string(pState[pProg])); // Read instruction as string
+		modes = { 0,0,0 }; // Reset modes.
+		if (opCodeStr.size() == 1) {
+			opCode = std::stoi(opCodeStr);
+		}
+		else {
+			opCode = std::stoi(opCodeStr.substr(opCodeStr.size() - 2));
+			std::string modeStr = opCodeStr.substr(0, opCodeStr.size() - 2);
+			std::transform(modeStr.rbegin(), modeStr.rend(), modes.begin(), [](char modeC) { return modeC - '0'; }); // It's reversed (mode for first arg is last val in string).
+		}
+
+		std::string inputStr;
+		switch (opCode)
+		{
+		case 1: // ADD
+			setState(modes[2], getValue(modes[0], pState[pProg + 1]) + getValue(modes[1], pState[pProg + 2]));
+			pProg += 4; break;
+		case 2: // MUL
+			setState(modes[2], getValue(modes[0], pState[pProg + 1]) * getValue(modes[1], pState[pProg + 2]));
+			pProg += 4; break;
+		case 3: // IN
+			if (!inputRead) {
+				setState(modes[0], input, 1); // Store Input.
+				inputRead = true;
+			}
+			else {
+				return output; // The single input has already been processed, return until execution is resumed with new argument.
+			}
+			pProg += 2; break;
+		case 4: // OUT
+			output = getValue(modes[0], pState[pProg + 1]);
+			pProg += 2; break;
+		case 5: // JMP_NE
+			pProg = ((getValue(modes[0], pState[pProg + 1]) != 0) ? getValue(modes[1], pState[pProg + 2]) : pProg + 3); break;
+		case 6: // JMP_E
+			pProg = ((getValue(modes[0], pState[pProg + 1]) == 0) ? getValue(modes[1], pState[pProg + 2]) : pProg + 3); break;
+		case 7: // LESS_THAN
+			setState(modes[2], getValue(modes[0], pState[pProg + 1]) < getValue(modes[1], pState[pProg + 2]));
+			pProg += 4; break;
+		case 8: // EQUAL
+			setState(modes[2], getValue(modes[0], pState[pProg + 1]) == getValue(modes[1], pState[pProg + 2]));
+			pProg += 4; break;
+		case 9: // BASE_OFFSET
+			relBase += getValue(modes[0], pState[pProg + 1]);
+			pProg += 2; break;
+		default:
+			throw std::runtime_error("Unrecognised opcode");
+		}
+			
+		return output;
+	}
+
 	std::vector<bigint> IntCodeComputer::RunProgram(bigint input)
 	{
 		std::vector<int> modes(3, 0);
@@ -76,7 +137,7 @@ namespace aoc::y2019::intcc {
 			}
 		}
 		return outputs;
-	}	
+	}
 
 	inline bigint IntCodeComputer::getValue(int mode, bigint instruction) {
 		switch (mode) {
