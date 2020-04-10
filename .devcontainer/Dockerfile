@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 RUN apt-get update \
     # Pre-requsities
-    && apt-get install -y wget git build-essential gdb openssh-server xorg openbox libxt-dev libx11-6 libx11-dev libxmu-dev libxpm-dev libxaw7-dev \
+    && apt-get install -y wget git build-essential gdb openssh-server libxt-dev libx11-6 libx11-dev libxmu-dev libxpm-dev libxaw7-dev \
     #
     # Install CMake binary
     && cmake_version=3.17.1 \
