@@ -3,7 +3,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 file(GLOB PDCurses_SRC
 "PDCurses/pdcurses/*.c"
-"PDCurses/x11/*.c" # Windows Specific. x11 for Linux.
+"PDCurses/x11/*.c"
 )
 
 add_library(PDCurses
