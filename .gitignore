@@ -330,4 +330,5 @@ ASALocalRun/
 .mfractor/
 
 # CMake
+/CMakeFiles
 /out
