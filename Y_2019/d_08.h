@@ -1,6 +1,7 @@
 #pragma once
 #include "default.h"
 #include <set>
+#include <limits>
 
 namespace aoc::y2019::d08 {
 
@@ -52,7 +53,7 @@ namespace aoc::y2019::d08 {
 
 		// Part 1. Find best layer.
 		int bestLayer = -1;
-		int bestLayerNumZeros = INT_MAX;
+		int bestLayerNumZeros = std::numeric_limits<int>::max();
 		int bestLayerNum1s = 0;
 		int bestLayerNum2s = 0;
 		for (auto layer = 0; layer < (imageData.size() / imSize); ++layer) {
