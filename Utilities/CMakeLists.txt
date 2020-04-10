@@ -18,6 +18,11 @@ PUBLIC
 	"/usr/include/X11"
 )
 
+target_link_libraries(PDCurses
+PRIVATE
+	Xaw Xmu Xt X11 SM ICE Xext Xpm
+)
+
 add_library (Utilities
 STATIC
 "reader.h" "reader.cpp"
