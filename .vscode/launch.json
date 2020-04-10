@@ -10,13 +10,13 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/out/Run/Run",
-            "args": ["2019", "1"],
+            "args": ["2019", "20"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/out/Run",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "preLaunchTask": "cmake build debug",
+            "preLaunchTask": "cmake-build-debug",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
