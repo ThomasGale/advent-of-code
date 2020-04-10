@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 RUN apt-get update \
     # Pre-requsities
-    && apt-get install -y wget git build-essential gdb libxt-dev libx11-dev libxmu-dev libxpm-dev libxaw7-dev \
+    && apt-get install -y wget git build-essential gdb openssh-server xorg openbox libxt-dev libx11-6 libx11-dev libxmu-dev libxpm-dev libxaw7-dev \
     #
     # Install CMake binary
     && cmake_version=3.17.1 \
@@ -16,6 +16,11 @@ RUN apt-get update \
     #
     # C++
     && apt-get install -y clang \
+    # 
+    # Switch on ssh server
+    && service ssh start \
+    #&& mkdir -p ~/.ssh \
+    #&& echo ForwardX11 yes > ~/.ssh/config \
     #
     # Clean up
     && apt-get autoremove -y \

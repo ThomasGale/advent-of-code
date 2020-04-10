@@ -13,7 +13,9 @@
             "args": ["2019", "20"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/out/Run",
-            "environment": [],
+            "environment": [
+                {"name" : "DISPLAY", "value": "host.docker.internal:0"}
+            ],
             "externalConsole": false,
             "MIMode": "gdb",
             "preLaunchTask": "cmake-build-debug",

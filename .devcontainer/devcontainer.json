@@ -11,7 +11,10 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
+		"ms-azuretools.vscode-docker",
+		"spadin.remote-x11",
 		"twxs.cmake",
+		"ms-vscode.cmake-tools",
 		"ms-vscode.cpptools",
 		"mitaki28.vscode-clang",
 		"xaver.clang-format",
@@ -25,10 +28,14 @@
 	// "postCreateCommand": "uname -a",
 
 	// Uncomment to use the Docker CLI from inside the container. See https://aka.ms/vscode-remote/samples/docker-in-docker.
-	// "mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
+	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
 
-	// Uncomment when using a ptrace-based debugger like C++, Go, and Rust
-	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+	"runArgs": [
+		"--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined", // ptrace-based debugger like C++, Go, and Rust
+		"-e", "DISPLAY=host.docker.internal:0", // X11 forwarding bits.  "-p5042:22",
+		//"-v", "/tmp/.X11-unix:/tmp/.X11-unix",
+        //"-e", "DISPLAY=host.docker.internal:0" //"--net", "host", "-v", "/tmp/.X11-unix:/tmp/.X11-unix", "-v", "/dev/snd:/dev/snd", "-e", "DISPLAY=localhost:0" // X11 Forwarding
+	],
 
 	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
 	// "remoteUser": "vscode"
