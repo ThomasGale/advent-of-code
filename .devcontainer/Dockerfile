@@ -16,11 +16,6 @@ RUN apt-get update \
     #
     # C++
     && apt-get install -y clang \
-    # 
-    # Switch on ssh server
-    #&& service ssh start \
-    #&& mkdir -p ~/.ssh \
-    #&& echo ForwardX11 yes > ~/.ssh/config \
     #
     # Clean up
     && apt-get autoremove -y \
