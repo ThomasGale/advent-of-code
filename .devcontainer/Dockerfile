@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 RUN apt-get update \
     # Pre-requsities
-    && apt-get install -y wget git \
+    && apt-get install -y wget git build-essential \
     #
     # Install CMake binary
     && cmake_version=3.17.1 \
