@@ -9,7 +9,7 @@
             "name": "(gdb) Debug",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/out/Run/Run",
+            "program": "${workspaceFolder}/out/Utilities/TestCurses",
             "args": ["2019", "20"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/out/Run",
