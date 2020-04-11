@@ -1,6 +1,5 @@
 #include "basic_window.h"
-#include "curses.h"
-#include "panel.h"
+#include "ncurses.h"
 
 namespace aoc::utils {
 
