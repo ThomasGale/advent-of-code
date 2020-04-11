@@ -10,8 +10,6 @@ namespace aoc::utils {
 		init_pair(1, COLOR_GREEN, COLOR_BLACK); // Accent
 		init_pair(2, COLOR_WHITE, COLOR_CYAN); // Active
 		init_pair(3, COLOR_WHITE, COLOR_YELLOW); // Highlight
-
-		resize_term(height, width);
 		keypad(stdscr, TRUE);
 	}
 
