@@ -19,11 +19,11 @@
 #include <thread>
 #include <vector>
 
-#include "../Utilities/reader.h"
-#include "../Utilities/utils.hpp"
-#include "../Utilities/basic_window.h"
-#include "../Utilities/vec2.h"
-#include "../Utilities/mat2x2.h"
+#include "../utilities/reader.h"
+#include "../utilities/utils.hpp"
+#include "../utilities/basic_window.h"
+#include "../utilities/vec2.h"
+#include "../utilities/mat2x2.h"
 
 namespace aoc::y2019 {
 

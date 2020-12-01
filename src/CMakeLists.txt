@@ -1,4 +1,4 @@
-add_subdirectory(Utilities)
+add_subdirectory(utilities)
 add_subdirectory(Y_2018)
 add_subdirectory(Y_2019)
 add_subdirectory(Y_2020)
