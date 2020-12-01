@@ -10,6 +10,5 @@ STATIC
 "y_2018.h" "y_2018.cpp"
 )
 
-target_link_libraries(Y_2018
-Utilities
-)
+target_link_libraries(Y_2018 PUBLIC
+utilities)

@@ -21,7 +21,7 @@
 
 #include "../utilities/reader.h"
 #include "../utilities/utils.hpp"
-#include "../utilities/basic_window.h"
+#include "../utilities/BasicWindow.h"
 #include "../utilities/vec2.h"
 #include "../utilities/mat2x2.h"
 
