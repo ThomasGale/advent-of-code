@@ -1,0 +1,8 @@
+add_library(y2020
+    d01.cpp)
+
+target_link_libraries(y2020 PUBLIC
+    solution)
+
+file(GLOB INPUTS *.txt)
+configure_file(${INPUTS} ${INPUTS} COPYONLY)

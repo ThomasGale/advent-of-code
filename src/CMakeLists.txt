@@ -1,5 +1,6 @@
+add_subdirectory(solution)
 add_subdirectory(utilities)
 add_subdirectory(Y_2018)
 add_subdirectory(Y_2019)
-add_subdirectory(Y_2020)
+add_subdirectory(y2020)
 add_subdirectory(run)
