@@ -9,10 +9,10 @@
             "name": "(gdb) Debug",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/Run/Run",
+            "program": "${workspaceFolder}/build/src/run/run",
             "args": ["2019", "20"],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/build/Run",
+            "cwd": "${workspaceFolder}/build/src/run",
             "externalConsole": false,
             "MIMode": "gdb",
             "setupCommands": [
