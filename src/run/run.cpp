@@ -1,38 +1,43 @@
-﻿#include <iomanip>
+﻿#include <fstream>
+#include <iomanip>
 #include <iostream>
-#include <fstream>
 #include <sstream>
 #include <stdexcept>
 
 #include "../Y_2018/y_2018.h"
 #include "../Y_2019/y_2019.h"
 
-int main(int argc, char** argv)
-{
-	// Setup.
-	if (argc != 3) throw std::invalid_argument("Expected two arguments year and day. Eg. 2018 1");
-	int year = atoi(argv[1]);
-	int day = atoi(argv[2]);
-	std::cout << "Running Avent of Code " << year << " day " << day << "\n";
+int main(int argc, char** argv) {
+    // Setup.
+    if (argc != 3)
+        throw std::invalid_argument(
+            "Expected two arguments year and day. Eg. 2018 1");
+    int year = atoi(argv[1]);
+    int day = atoi(argv[2]);
+    std::cout << "Running Avent of Code " << year << " day " << day << "\n";
 
-	// Find data.
-	std::stringstream ss;
-	ss << "Y_" << year << "/d_" << std::setfill('0') << std::setw(2) << day << ".txt";
-	std::fstream fs;
-	std::cout << "Opening data file " << ss.str() << "...\n";
-	fs.open(ss.str());
-	if (!fs.is_open()) throw std::runtime_error("Unable to open data file");
+    // Find data.
+    std::stringstream ss;
+    ss << "Y_" << year << "/d_" << std::setfill('0') << std::setw(2) << day
+       << ".txt";
+    std::fstream fs;
+    std::cout << "Opening data file " << ss.str() << "...\n";
+    fs.open(ss.str());
+    if (!fs.is_open())
+        throw std::runtime_error("Unable to open data file");
 
-	// Run algorithm
-	switch (year)
-	{
-	case 2018:
-		aoc::y2018::calculate(day, fs); break;
-	case 2019:
-		aoc::y2019::calculate(day, fs); break;
-	default:
-		throw std::runtime_error("Unrecognised year");;
-	}
+    // Run algorithm
+    switch (year) {
+    case 2018:
+        aoc::y2018::calculate(day, fs);
+        break;
+    case 2019:
+        aoc::y2019::calculate(day, fs);
+        break;
+    default:
+        throw std::runtime_error("Unrecognised year");
+        ;
+    }
 
-	return 0;
+    return 0;
 }
