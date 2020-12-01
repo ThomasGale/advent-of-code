@@ -97,7 +97,7 @@ namespace aoc::y2019::d07 {
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 7: Amplification Circuit ---\n";
 		std::string inputStr(std::istreambuf_iterator<char>(input), {});
-		std::vector<std::string> inputStrs = aoc::utils::split(inputStr, ',');
+		std::vector<std::string> inputStrs = aoc::utils::reader::split(inputStr, ',');
 		std::vector<int> inputProgram;
 		std::transform(inputStrs.begin(), inputStrs.end(), std::back_inserter(inputProgram), [](auto& input) { return std::stoi(input); });
 

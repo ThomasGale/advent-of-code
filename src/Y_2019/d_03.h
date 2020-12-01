@@ -47,9 +47,9 @@ namespace aoc::y2019::d03 {
 
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 3: Crossed Wires ---\n";
-		std::vector<std::string> input_strings = aoc::utils::read_input(input);
-		std::vector<std::string> wire1_str = aoc::utils::split(input_strings[0], ',');
-		std::vector<std::string> wire2_str = aoc::utils::split(input_strings[1], ',');
+		std::vector<std::string> input_strings = aoc::utils::reader::read_input(input);
+		std::vector<std::string> wire1_str = aoc::utils::reader::split(input_strings[0], ',');
+		std::vector<std::string> wire2_str = aoc::utils::reader::split(input_strings[1], ',');
 
 		auto wire1 = ComputeCrawledWire(wire1_str);
 		auto wire2 = ComputeCrawledWire(wire2_str);

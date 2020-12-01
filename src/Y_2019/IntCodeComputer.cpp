@@ -3,7 +3,7 @@
 namespace aoc::y2019::intcc {
 
 	IntCodeComputer::IntCodeComputer(const std::string& programString) : pProg(0), relBase(0) {
-		std::vector<std::string> inputStrs = aoc::utils::split(programString, ',');
+		std::vector<std::string> inputStrs = aoc::utils::reader::split(programString, ',');
 		std::transform(inputStrs.begin(), inputStrs.end(), std::back_inserter(pState), [](auto& input) { return std::stoll(input); });
 	}
 

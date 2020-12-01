@@ -4,7 +4,7 @@
 namespace aoc::y2018::d01 {	
 	void calculate(std::istream& input) {
 		std::cout << "Chronal Calibration\n";
-		std::vector<std::string> input_strings = aoc::utils::read_input(input);
+		std::vector<std::string> input_strings = aoc::utils::reader::read_input(input);
 
 		std::set<int> freqs{ 0 };
 		bool freq_twice_found = false;

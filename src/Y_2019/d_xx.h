@@ -6,8 +6,8 @@ namespace aoc::y2019::d00 {
 		std::cout << " Day xx \n";
 
 		//std::string inputStr(std::istreambuf_iterator<char>(input), {});
-		//std::vector<std::string> inputStrs = aoc::utils::read_input(input);
-		//std::vector<std::string> split = aoc::utils::split(inputStr, ',');
+		//std::vector<std::string> inputStrs = aoc::utils::reader::read_input(input);
+		//std::vector<std::string> split = aoc::utils::reader::split(inputStr, ',');
 
 		std::cout << "1. ... :\n";
 		std::cout << "" << "\n";

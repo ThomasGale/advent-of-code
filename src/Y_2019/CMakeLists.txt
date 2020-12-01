@@ -1,10 +1,5 @@
-﻿cmake_minimum_required (VERSION 3.14)
-set(CMAKE_CXX_STANDARD 17)
-
-add_library (Y_2019
-STATIC
-"default.h"
-"IntCodeComputer.h" "IntCodeComputer.cpp"
+﻿add_library (Y_2019
+"IntCodeComputer.cpp"
 "d_01.h"
 "d_02.h"
 "d_03.h"
@@ -28,8 +23,7 @@ STATIC
 "d_21.h"
 "d_22.h"
 "d_23.h"
-"y_2019.h" "y_2019.cpp"
-)
+"y_2019.cpp")
 
 target_link_libraries(Y_2019 PUBLIC
     utilities)

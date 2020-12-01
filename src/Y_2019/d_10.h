@@ -16,7 +16,7 @@ namespace aoc::y2019::d10 {
 
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 10: Monitoring Station ---\n";
-		std::vector<std::string> inputStrs = aoc::utils::read_input(input);
+		std::vector<std::string> inputStrs = aoc::utils::reader::read_input(input);
 
 		int width = int(inputStrs.front().size());
 		int height = int(inputStrs.size());

@@ -42,7 +42,7 @@ namespace aoc::y2019::d12 {
 
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 12: The N-Body Problem ---\n";
-		std::vector<std::string> inputStrs = aoc::utils::read_input(input);
+		std::vector<std::string> inputStrs = aoc::utils::reader::read_input(input);
 
 		// Get Initial Moon Positions
 		std::vector<Moon> initialState;

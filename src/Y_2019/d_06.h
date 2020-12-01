@@ -25,10 +25,10 @@ namespace aoc::y2019::d06 {
 
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 6: Universal Orbit Map ---\n";
-		std::vector<std::string> inputStrs = aoc::utils::read_input(input);
+		std::vector<std::string> inputStrs = aoc::utils::reader::read_input(input);
 		std::map<std::string, std::string> orbitMap; // Key orbits value
 		for (auto& inputStr : inputStrs) {
-			std::vector<std::string> orbitsStr = aoc::utils::split(inputStr, ')');
+			std::vector<std::string> orbitsStr = aoc::utils::reader::split(inputStr, ')');
 			orbitMap[orbitsStr[1]] = orbitsStr[0];
 		}
 

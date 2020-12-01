@@ -32,7 +32,7 @@ namespace aoc::y2018::d03 {
 
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 3: No Matter How You Slice It ---\n";
-		std::vector<std::string> input_strings = aoc::utils::read_input(input);
+		std::vector<std::string> input_strings = aoc::utils::reader::read_input(input);
 
 		// Part 1.
 		std::vector<Claim> claims;

@@ -94,7 +94,7 @@ namespace aoc::y2019::d14 {
 
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 14: Space Stoichiometry ---\n";
-		std::vector<std::string> inputStrs = aoc::utils::read_input(input);
+		std::vector<std::string> inputStrs = aoc::utils::reader::read_input(input);
 
 		// Parse the input.
 		Reactions reactions;

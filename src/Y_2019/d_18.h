@@ -27,7 +27,7 @@ namespace aoc::y2019::d18 {
 
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 18: Many-Worlds Interpretation ---\n";
-		std::vector<std::string> inputStrs = aoc::utils::read_input(input);
+		std::vector<std::string> inputStrs = aoc::utils::reader::read_input(input);
 		BasicWindow window(41, 41);
 
 		// Process Input.

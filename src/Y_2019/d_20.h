@@ -43,7 +43,7 @@ namespace aoc::y2019::d20 {
 
 	void calculate(std::istream& input) {
 		std::cout << "--- Day 20: Donut Maze ---\n";
-		std::vector<std::string> inputStrs = aoc::utils::read_input(input);
+		std::vector<std::string> inputStrs = aoc::utils::reader::read_input(input);
 		std::map<Vec2, int, Vec2LessComp> maze;
 		std::vector<Vertex> corridors;
 		int height = inputStrs.size();

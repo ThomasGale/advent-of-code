@@ -93,7 +93,7 @@ namespace aoc::y2019::d22 {
 
 	void calculate(std::istream& input) {
 		std::cout << " Day 22 \n";
-		std::vector<std::string> inputStrs = aoc::utils::read_input(input);
+		std::vector<std::string> inputStrs = aoc::utils::reader::read_input(input);
 		auto shuffleProcess = ParseShuffleInput(inputStrs);
 
 		std::vector<int> deck(11);

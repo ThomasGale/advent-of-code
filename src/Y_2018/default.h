@@ -10,5 +10,5 @@
 #include <string>
 #include <vector>
 
-#include "../utilities/reader.h"
-#include "../utilities/utils.hpp"
+#include "../utilities/Reader.h"
+#include "../utilities/IterUtils.hpp"

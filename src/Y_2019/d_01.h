@@ -15,7 +15,7 @@ namespace aoc::y2019::d01 {
 
 	void calculate(std::istream& input) {
 		std::cout << "The Tyranny of the Rocket Equation\n";
-		std::vector<std::string> input_strings = aoc::utils::read_input(input);
+		std::vector<std::string> input_strings = aoc::utils::reader::read_input(input);
 		
 		// Part 1.
 		int total_fuel = std::accumulate(input_strings.begin(), input_strings.end(), 0, [](const int& total_fuel, const std::string& mass_str) {
