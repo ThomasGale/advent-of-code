@@ -30,10 +30,8 @@ configure_file("../Y_2019/d_22.txt" "Y_2019/d_22.txt" COPYONLY)
 configure_file("../Y_2019/d_23.txt" "Y_2019/d_23.txt" COPYONLY)
 
 add_executable (Run
-"run.h" "run.cpp"
-)
+    "run.cpp")
 
 target_link_libraries(Run
-Y_2018
-Y_2019
-)
+    Y_2018
+    Y_2019)
