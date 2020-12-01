@@ -9,16 +9,12 @@
             "name": "(gdb) Debug",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/out/Run/Run",
+            "program": "${workspaceFolder}/build/Run/Run",
             "args": ["2019", "20"],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}/out/Run",
-            "environment": [
-                {"name" : "DISPLAY", "value": "host.docker.internal:0"}
-            ],
+            "cwd": "${workspaceFolder}/build/Run",
             "externalConsole": false,
             "MIMode": "gdb",
-            "preLaunchTask": "cmake-build-debug",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",

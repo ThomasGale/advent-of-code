@@ -1,7 +1,11 @@
-﻿cmake_minimum_required (VERSION 3.14)
-set(CMAKE_CXX_STANDARD 17)
+﻿cmake_minimum_required(VERSION 3.17.2)
+project(AdventOfCode
+    VERSION 0.1.0
+    DESCRIPTION "Advent of Code"
+    LANGUAGES CXX CUDA)
 
-project(AventOfCode C CXX)
+# Project wide C++ standard
+set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(Utilities)
 add_subdirectory(Y_2018)
