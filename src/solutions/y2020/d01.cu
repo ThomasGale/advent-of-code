@@ -1,25 +1,14 @@
 #pragma once
 
 #include "Common.hpp"
+#include "cudautils.cuh"
 
 namespace aoc {
 namespace y2020 {
 
-__device__ volatile int sem = 0;
-
-__device__ void acquire_semaphore(volatile int* lock) {
-    while (atomicCAS((int*)lock, 0, 1) != 0)
-        ;
-}
-
-__device__ void release_semaphore(volatile int* lock) {
-    *lock = 0;
-    __threadfence();
-}
-
-__global__ void please(uint* ans) { *ans = 42; }
-
+namespace d01cuda {
 __global__ void sumMatchMul(int n, uint* in, int target, uint* ans) {
+    using namespace cudautils::semaphore;
     int index = blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
     for (int i = index; i < n; i += stride) {
@@ -44,6 +33,7 @@ __global__ void sumMatchMul(int n, uint* in, int target, uint* ans) {
         }
     }
 }
+} // namespace d01cuda
 
 class d01 : public Solution {
   public:
@@ -52,6 +42,7 @@ class d01 : public Solution {
     }
 
     void Calculate(std::istream& input) override {
+        using namespace d01cuda;
         int target = 2020;
         std::vector<std::string> inputStrs = utils::reader::read_input(input);
 

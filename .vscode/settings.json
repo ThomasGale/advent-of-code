@@ -1,7 +1,9 @@
 {
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "files.associations": {
+        "*.cps": "javascript",
         "*.tpp": "cpp",
-        "*.cu": "cpp"
+        "*.cu": "cpp",
+        "*.cuh": "cpp"
     }
 }
