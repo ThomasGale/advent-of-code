@@ -24,6 +24,8 @@ __global__ void checkPasswords(uint n, Password* passwords) {
     int index = blockIdx.x * blockDim.x + threadIdx.x;
     int stride = blockDim.x * gridDim.x;
     for (int i = index; i < n; i += stride) {
+        // Part 1
+        /*
         int c = 0;
         for (int j = 0; j < passwords[i].pswdLen; ++j) {
             if (passwords[i].pswd[j] == passwords[i].check) {
@@ -32,7 +34,12 @@ __global__ void checkPasswords(uint n, Password* passwords) {
         }
         if (c >= passwords[i].min && c <= passwords[i].max) {
             passwords[i].valid = true;
-        }
+        }*/
+
+        // Part 2
+        bool first = passwords[i].pswd[passwords[i].min-1] == passwords[i].check;
+        bool second = passwords[i].pswd[passwords[i].max-1] == passwords[i].check;
+        passwords[i].valid = (!first) != (!second);
     }
 }
 
