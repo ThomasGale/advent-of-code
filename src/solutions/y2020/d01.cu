@@ -6,7 +6,7 @@
 namespace aoc {
 namespace y2020 {
 
-namespace d01cuda {
+namespace d01impl {
 __global__ void sumMatchMul(int n, uint* in, int target, uint* ans) {
     using namespace cudautils::semaphore;
     int index = blockIdx.x * blockDim.x + threadIdx.x;
@@ -33,7 +33,7 @@ __global__ void sumMatchMul(int n, uint* in, int target, uint* ans) {
         }
     }
 }
-} // namespace d01cuda
+} // namespace d01impl
 
 class d01 : public Solution {
   public:
@@ -42,7 +42,7 @@ class d01 : public Solution {
     }
 
     void Calculate(std::istream& input) override {
-        using namespace d01cuda;
+        using namespace d01impl;
         int target = 2020;
         std::vector<std::string> inputStrs = utils::reader::read_input(input);
 

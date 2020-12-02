@@ -4,12 +4,25 @@ namespace aoc {
 namespace y2020 {
 namespace cudautils {
 
+// Useful for allocating number of threads.
+uint nearestPower2Above(uint x) {
+    int power = 1;
+    while (power < x)
+        power *= 2;
+    return power;
+}
+
 namespace device {
 
-int getMaxThreadsPerBlock() {
+uint getMaxThreadsPerBlock() {
     cudaDeviceProp prop;
     cudaGetDeviceProperties(&prop, 0);
     return prop.maxThreadsPerBlock;
+}
+
+// Generate a sensible number of threads per 1D block given the input size and the device capacity
+uint getThreadsPerBlock(uint x) {
+    return std::min(getMaxThreadsPerBlock(), nearestPower2Above(x));
 }
 
 } // namespace device
@@ -26,6 +39,9 @@ template <class T> __global__ void reduce(T* in, T* out, uint n) {
     uint tid = threadIdx.x;
     uint i = blockIdx.x * (blockDim.x * 2) + threadIdx.x;
     sdata[tid] = 0;
+
+    // TEST
+    // out[i] = 43;
 
     if (i < n) {
         sdata[tid] = in[i] + in[i + blockDim.x];
@@ -53,8 +69,8 @@ template <class T> __global__ void reduce(T* in, T* out, uint n) {
 
     // write result for this block to global mem
     if (tid == 0)
-        out[blockIdx.x] = 42;
-        //out[blockIdx.x] = sdata[0];
+        // out[blockIdx.x] = 42;
+        out[blockIdx.x] = sdata[0];
 }
 
 } // namespace mark
