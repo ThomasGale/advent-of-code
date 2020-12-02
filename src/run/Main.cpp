@@ -4,10 +4,11 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "../solutions/y2018/RegisteredSolutions.hpp"
-//#include "../solutions/y2019/RegisteredSolutions.hpp"
-#include "../solutions/y2020/RegisteredSolutions.hpp"
 #include "Solution.hpp"
+
+#include "../solutions/y2018/RegisteredSolutions.hpp"
+#include "../solutions/y2019/RegisteredSolutions.hpp"
+#include "../solutions/y2020/RegisteredSolutions.hpp"
 
 int main(int argc, char** argv) {
     // Setup.
@@ -30,7 +31,7 @@ int main(int argc, char** argv) {
 
     // Run algorithm
     auto sol = aoc::Solution::instantiate(year, day);
-    std::cout << sol->description << std::endl;
+    std::cout << " --- " << sol->description << " --- " << std::endl;
     sol->Calculate(fs);
 
     return 0;

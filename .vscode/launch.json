@@ -10,7 +10,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/src/run/main",
-            "args": ["2020", "1"],
+            "args": ["2018", "2"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/build/src/run",
             "externalConsole": false,

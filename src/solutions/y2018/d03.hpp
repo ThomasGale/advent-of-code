@@ -45,7 +45,6 @@ class d03 : public Solution {
     }
 
     void Calculate(std::istream& input) override {
-        std::cout << "--- Day 3: No Matter How You Slice It ---\n";
         std::vector<std::string> input_strings =
             aoc::utils::reader::read_input(input);
 

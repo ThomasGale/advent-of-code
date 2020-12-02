@@ -1,29 +1,5 @@
-﻿add_library (Y_2019
-"IntCodeComputer.cpp"
-"d_01.h"
-"d_02.h"
-"d_03.h"
-"d_04.h"
-"d_05.h"
-"d_06.h"
-"d_07.h"
-"d_08.h"
-"d_09.h"
-"d_10.h"
-"d_11.h"
-"d_12.h"
-"d_13.h"
-"d_14.h"
-"d_15.h"
-"d_16.h"
-"d_17.h"
-"d_18.h"
-"d_19.h"
-"d_20.h"
-"d_21.h"
-"d_22.h"
-"d_23.h"
-"y_2019.cpp")
+add_library(y2019 
+    IntCodeComputer.cpp)
 
-target_link_libraries(Y_2019 PUBLIC
+target_link_libraries(y2019 PUBLIC 
     utilities)

@@ -22,7 +22,6 @@ class d02 : public Solution {
     }
 
     void Calculate(std::istream& input) override {
-        std::cout << "--- Day 2: Inventory Management System ---\n";
         std::vector<std::string> input_strings =
             aoc::utils::reader::read_input(input);
 

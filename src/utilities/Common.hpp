@@ -19,6 +19,12 @@
 #include <thread>
 #include <vector>
 
-#include "Solution.hpp"
+#include "BasicWindow.h"
 #include "IterUtils.hpp"
+#include "Mat2x2.h"
 #include "Reader.h"
+#include "Solution.hpp"
+#include "Timer.hpp"
+#include "Vec2.h"
+
+using bigint = long long;

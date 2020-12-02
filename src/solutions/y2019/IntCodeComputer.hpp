@@ -1,8 +1,8 @@
 #pragma once
-#include "default.h"
+
+#include "Common.hpp"
 
 namespace aoc::y2019::intcc {
-	using bigint = long long;
 
 	class IntCodeComputer {
 	public:
