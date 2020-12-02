@@ -4,14 +4,63 @@ namespace aoc {
 namespace y2020 {
 namespace cudautils {
 
+namespace device {
+
 int getMaxThreadsPerBlock() {
     cudaDeviceProp prop;
     cudaGetDeviceProperties(&prop, 0);
     return prop.maxThreadsPerBlock;
 }
 
+} // namespace device
+
+// Experimenting with and learning different parellel reduce implementations.
+namespace reduce {
+
+// https://github.com/mark-poscablo/gpu-sum-reduction/blob/master/sum_reduction/reduce.cu
+namespace mark {
+
+template <class T> __global__ void reduce(T* in, T* out, uint n) {
+    extern __shared__ T sdata[];
+
+    uint tid = threadIdx.x;
+    uint i = blockIdx.x * (blockDim.x * 2) + threadIdx.x;
+    sdata[tid] = 0;
+
+    if (i < n) {
+        sdata[tid] = in[i] + in[i + blockDim.x];
+    }
+
+    __syncthreads();
+
+    // do reduction in shared mem
+    // this loop now starts with s = 512 / 2 = 256
+    for (uint s = blockDim.x / 2; s > 32; s >>= 1) {
+        if (tid < s) {
+            sdata[tid] += sdata[tid + s];
+        }
+        __syncthreads();
+    }
+
+    if (tid < 32) {
+        sdata[tid] += sdata[tid + 32];
+        sdata[tid] += sdata[tid + 16];
+        sdata[tid] += sdata[tid + 8];
+        sdata[tid] += sdata[tid + 4];
+        sdata[tid] += sdata[tid + 2];
+        sdata[tid] += sdata[tid + 1];
+    }
+
+    // write result for this block to global mem
+    if (tid == 0)
+        out[blockIdx.x] = 42;
+        //out[blockIdx.x] = sdata[0];
+}
+
+} // namespace mark
+
 // http://developer.download.nvidia.com/compute/cuda/1.1-Beta/x86_website/projects/reduction/doc/reduction.pdf
-namespace reducenv {
+namespace nvidia {
 
 template <class T, uint blockSize>
 __device__ void warpReduce(volatile T* sdata, unsigned int tid) {
@@ -28,6 +77,7 @@ __device__ void warpReduce(volatile T* sdata, unsigned int tid) {
     if (blockSize >= 2)
         sdata[tid] += sdata[tid + 1];
 }
+
 template <class T, uint blockSize>
 __global__ void reduce6(T* g_idata, T* g_odata, uint n) {
     extern __shared__ T sdata[];
@@ -64,6 +114,8 @@ __global__ void reduce6(T* g_idata, T* g_odata, uint n) {
         g_odata[blockIdx.x] = sdata[0];
 }
 
+} // namespace nvidia
+
 } // namespace reduce
 
 namespace semaphore {
@@ -79,8 +131,8 @@ __device__ void release_semaphore(volatile int* lock) {
     *lock = 0;
     __threadfence();
 }
-
 } // namespace semaphore
+
 } // namespace cudautils
 } // namespace y2020
 } // namespace aoc
