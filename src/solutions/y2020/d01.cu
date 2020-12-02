@@ -10,7 +10,7 @@ namespace d01impl {
 __global__ void sumMatchMul(int n, uint* in, int target, uint* ans) {
     using namespace cudautils::semaphore;
     int index = blockIdx.x * blockDim.x + threadIdx.x;
-    int stride = blockDim.x * gridDim.x;
+    int stride = blockDim.x * gridDim.x; // This is 1 currently
     for (int i = index; i < n; i += stride) {
         for (int j = i; j < n; ++j) {
             for (int k = j; k < n; ++k) {
@@ -43,6 +43,8 @@ class d01 : public Solution {
 
     void Calculate(std::istream& input) override {
         using namespace d01impl;
+        using namespace cudautils::device;
+
         int target = 2020;
         std::vector<std::string> inputStrs = utils::reader::read_input(input);
 
@@ -56,16 +58,13 @@ class d01 : public Solution {
         }
 
         // Get cuda properies for the current device.
-        cudaDeviceProp prop;
-        cudaGetDeviceProperties(&prop, 0);
-        uint blockSize = prop.maxThreadsPerBlock;
-        uint numBlocks = (n + blockSize - 1) / blockSize;
+        uint threads = getThreadsPerBlock(n);
 
         // Run
         uint* result;
         cudaMallocManaged(&result, sizeof(uint));
         *result = 0;
-        sumMatchMul<<<numBlocks, blockSize>>>(n, in, target, result);
+        sumMatchMul<<<1, threads>>>(n, in, target, result);
 
         // Wait for GPU to finish before accessing on host
         cudaDeviceSynchronize();

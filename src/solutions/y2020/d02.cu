@@ -37,8 +37,10 @@ __global__ void checkPasswords(uint n, Password* passwords) {
         }*/
 
         // Part 2
-        bool first = passwords[i].pswd[passwords[i].min-1] == passwords[i].check;
-        bool second = passwords[i].pswd[passwords[i].max-1] == passwords[i].check;
+        bool first =
+            passwords[i].pswd[passwords[i].min - 1] == passwords[i].check;
+        bool second =
+            passwords[i].pswd[passwords[i].max - 1] == passwords[i].check;
         passwords[i].valid = (!first) != (!second);
     }
 }
@@ -53,11 +55,10 @@ __global__ void countValid(uint n, uint* counts) {
     int number_of_threads = blockDim.x;
 
     while (number_of_threads > 0) {
-        if (tid < number_of_threads) // still alive?
-        {
+        if (tid < number_of_threads) {
             const auto fst = tid * step_size * 2;
             const auto snd = fst + step_size;
-            if (snd < n) {
+            if (snd < n) { // Safety first.
                 counts[fst] += counts[snd];
             }
         }
