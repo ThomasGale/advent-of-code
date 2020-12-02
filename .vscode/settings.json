@@ -4,6 +4,6 @@
         "*.cps": "javascript",
         "*.tpp": "cpp",
         "*.cu": "cpp",
-        "*.cuh": "cpp"
+        "*.cuh": "cpp",
     }
 }
