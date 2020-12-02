@@ -6,7 +6,7 @@
 namespace aoc {
 namespace y2020 {
 
-Solution::Registrar<y2020::d01> r01(2020, 01, "Combination something or other");
+Solution::Registrar<y2020::d01> r01(2020, 01, "Report Repair");
 
 } // namespace y2020
 } // namespace aoc
