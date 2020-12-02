@@ -5,6 +5,7 @@
 #include <iostream>
 
 namespace aoc {
+namespace y2020 {
 
 class d01 : public Solution {
   public:
@@ -13,11 +14,9 @@ class d01 : public Solution {
     }
     void Calculate(std::istream& input) override {
 
-
-        
         std::cout << "Running 2020 Day 1 Calculate" << std::endl;
-
     }
 };
 
+} // namespace y2020
 } // namespace aoc

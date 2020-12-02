@@ -5,6 +5,6 @@ add_executable (main
     "Main.cpp")
 
 target_link_libraries(main
-    Y_2018
-    Y_2019
+    y2018
+    #y2019
     y2020)

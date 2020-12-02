@@ -1,10 +1,12 @@
-﻿find_package(Curses REQUIRED)
+﻿add_library (utilities
+    "Reader.cpp"
+    "BasicWindow.cpp"
+    "Solution.cpp")
 
-add_library (utilities
-"Reader.cpp"
-"BasicWindow.cpp")
+find_package(Curses REQUIRED)
 
 target_include_directories(utilities PUBLIC
+    .
     ${CURSES_INCLUDE_DIR})
 
 target_link_libraries(utilities PUBLIC
