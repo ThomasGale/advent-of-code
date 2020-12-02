@@ -6,8 +6,8 @@
 
 #include "Solution.hpp"
 
-#include "../solutions/y2018/RegisteredSolutions.hpp"
-#include "../solutions/y2019/RegisteredSolutions.hpp"
+//#include "../solutions/y2018/RegisteredSolutions.hpp"
+//#include "../solutions/y2019/RegisteredSolutions.hpp"
 #include "../solutions/y2020/RegisteredSolutions.hpp"
 
 int main(int argc, char** argv) {

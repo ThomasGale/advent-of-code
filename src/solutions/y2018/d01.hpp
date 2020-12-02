@@ -11,8 +11,6 @@ class d01 : public Solution {
         return std::make_unique<d01>();
     }
     void Calculate(std::istream& input) override {
-
-        std::cout << "Chronal Calibration\n";
         std::vector<std::string> input_strings =
             aoc::utils::reader::read_input(input);
 

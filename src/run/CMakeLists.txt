@@ -2,10 +2,13 @@
 file(COPY ${INPUTS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable (main
-    "Main.cpp")
+    Main.cpp)
 
 target_link_libraries(main
     utilities
-    y2018
-    y2019
+    #y2018
+    #y2019
     y2020)
+
+# For CUDA 2020.
+set_source_files_properties(Main.cpp PROPERTIES LANGUAGE CUDA)
