@@ -6,9 +6,8 @@
 #include "d02.hpp"
 #include "d03.hpp"
 #include "d04.hpp"
-
-/*#include "d05.hpp"
-#include "d06.hpp"
+#include "d05.hpp"
+/*#include "d06.hpp"
 #include "d07.hpp"
 #include "d08.hpp"
 #include "d09.hpp"
@@ -34,9 +33,9 @@ Solution::Registrar<d01> r01(2019, 01, "The Tyranny of the Rocket Equation");
 Solution::Registrar<d02> r02(2019, 02, "1202 Program Alarm");
 Solution::Registrar<d03> r03(2019, 03, "Crossed Wires");
 Solution::Registrar<d04> r04(2019, 04, "Secure Container");
+Solution::Registrar<d05> r05(2019, 05, "Sunny with a Chance of Asteroids");
 
-/*Solution::Registrar<y2019::d05> r05(2018, 05, "No Matter How You Slice It");
-Solution::Registrar<y2019::d06> r06(2018, 06, "No Matter How You Slice It");
+/*Solution::Registrar<y2019::d06> r06(2018, 06, "No Matter How You Slice It");
 Solution::Registrar<y2019::d07> r07(2018, 07, "No Matter How You Slice It");
 Solution::Registrar<y2019::d08> r08(2018, 08, "No Matter How You Slice It");
 Solution::Registrar<y2019::d09> r09(2018, 09, "No Matter How You Slice It");
