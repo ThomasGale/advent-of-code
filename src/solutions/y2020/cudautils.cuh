@@ -12,6 +12,21 @@ uint nearestPower2Above(uint x) {
     return power;
 }
 
+namespace sanity {
+
+void checkCuda() {
+    // check for error
+    cudaError_t error = cudaGetLastError();
+    if (error != cudaSuccess) {
+        std::cerr << "Cuda error: " << cudaGetErrorString(error)
+                  << std::endl;
+    } else {
+        std::cout << "Cuda: ok :)" << std::endl;
+    }
+}
+
+} // namespace sanity
+
 namespace device {
 
 uint getMaxThreadsPerBlock() {
@@ -39,10 +54,11 @@ namespace reduce {
 
 namespace count {
 
-// Reduce like operation (just using single block)
+// Reduce sum operation (just using single block)
 // Inpired by:
 // https://www.eximiaco.tech/en/2019/06/10/implementing-parallel-reduction-in-cuda/
-__global__ void count(uint n, uint* counts) {
+// And spare values in x must be init to 0.
+template <class T> __global__ void sumAdd(uint n, T* x) {
     const int tid = threadIdx.x;
 
     auto step_size = 1;
@@ -53,7 +69,31 @@ __global__ void count(uint n, uint* counts) {
             const auto fst = tid * step_size * 2;
             const auto snd = fst + step_size;
             if (snd < n) { // Safety first.
-                counts[fst] += counts[snd];
+                x[fst] += x[snd];
+            }
+        }
+
+        step_size <<= 1;
+        number_of_threads >>= 1;
+    };
+}
+
+// Reduce mul operation (just using single block)
+// Inpired by:
+// https://www.eximiaco.tech/en/2019/06/10/implementing-parallel-reduction-in-cuda/
+// And spare values in x must be init to 1.
+template <class T> __global__ void sumMul(uint n, T* x) {
+    const int tid = threadIdx.x;
+
+    auto step_size = 1;
+    int number_of_threads = blockDim.x;
+
+    while (number_of_threads > 0) {
+        if (tid < number_of_threads) {
+            const auto fst = tid * step_size * 2;
+            const auto snd = fst + step_size;
+            if (snd < n) { // Safety first.
+                x[fst] *= x[snd];
             }
         }
 

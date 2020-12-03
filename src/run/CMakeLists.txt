@@ -12,3 +12,5 @@ target_link_libraries(main
 
 # For CUDA 2020.
 set_source_files_properties(Main.cpp PROPERTIES LANGUAGE CUDA)
+# For CUDA dynamic parallelism
+set_target_properties(main PROPERTIES CUDA_SEPARABLE_COMPILATION ON)

@@ -8,11 +8,13 @@
             "type": "process",
             "command": "nvprof",
             "args": [
+                //"--kernels",
+                //"computeTreeCount",
                 "--unified-memory-profiling",
                 "off",
                 "${workspaceFolder}/build/src/run/main",
                 "2020",
-                "1"
+                "3"
             ],
             "options": {
                 "cwd": "${workspaceFolder}/build/src/run"
