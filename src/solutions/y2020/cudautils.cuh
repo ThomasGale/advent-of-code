@@ -20,15 +20,49 @@ uint getMaxThreadsPerBlock() {
     return prop.maxThreadsPerBlock;
 }
 
-// Generate a sensible number of threads per 1D block given the input size and the device capacity
+// Generate a sensible number of threads per 1D block given the input size and
+// the device capacity
 uint getThreadsPerBlock(uint x) {
     return std::min(getMaxThreadsPerBlock(), nearestPower2Above(x));
+}
+
+// Simple naive way to quickly figure how may blocks required to fully run x
+// parellel ops.
+uint getNumberOfBlocks(uint x, uint threadCount) {
+    return (x / threadCount) + 1;
 }
 
 } // namespace device
 
 // Experimenting with and learning different parellel reduce implementations.
 namespace reduce {
+
+namespace count {
+
+// Reduce like operation (just using single block)
+// Inpired by:
+// https://www.eximiaco.tech/en/2019/06/10/implementing-parallel-reduction-in-cuda/
+__global__ void count(uint n, uint* counts) {
+    const int tid = threadIdx.x;
+
+    auto step_size = 1;
+    int number_of_threads = blockDim.x;
+
+    while (number_of_threads > 0) {
+        if (tid < number_of_threads) {
+            const auto fst = tid * step_size * 2;
+            const auto snd = fst + step_size;
+            if (snd < n) { // Safety first.
+                counts[fst] += counts[snd];
+            }
+        }
+
+        step_size <<= 1;
+        number_of_threads >>= 1;
+    };
+}
+
+} // namespace count
 
 // https://github.com/mark-poscablo/gpu-sum-reduction/blob/master/sum_reduction/reduce.cu
 namespace mark {
